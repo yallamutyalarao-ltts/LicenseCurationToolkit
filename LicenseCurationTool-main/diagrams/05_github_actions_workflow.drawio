@@ -1,0 +1,304 @@
+<mxfile host="app.diagrams.net" modified="2025-01-15T12:45:00.000Z" agent="Claude" version="22.1.16">
+  <diagram name="GitHub Actions Workflow" id="github-actions">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Trigger -->
+        <mxCell id="trigger" value="Workflow Trigger" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#F57F17;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="160" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Trigger Types -->
+        <mxCell id="push" value="push (main/master)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffecb3;strokeColor=#FF6F00;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="240" y="20" width="130" height="35" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pr" value="pull_request" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffecb3;strokeColor=#FF6F00;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="240" y="65" width="130" height="35" as="geometry" />
+        </mxCell>
+
+        <mxCell id="schedule" value="schedule (cron)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffecb3;strokeColor=#FF6F00;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="240" y="110" width="130" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 1 -->
+        <mxCell id="stage1-box" value="Stage 1: ORT Analysis" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976D2;fontSize=13;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="180" width="330" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ort-analyze" value="ORT Analyzer&#xa;(Dependencies)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976D2;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="50" y="230" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ort-advise" value="ORT Advisor&#xa;(Vulnerabilities)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976D2;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="160" y="230" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ort-report" value="ORT Reporter&#xa;(SPDX/SBOM)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e3f2fd;strokeColor=#1976D2;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="270" y="230" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 2 -->
+        <mxCell id="stage2-box" value="Stage 2: Extract Uncertain" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#90caf9;strokeColor=#1565C0;fontSize=13;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="180" width="220" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="extract" value="Extract packages&#xa;with missing licenses" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1565C0;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="410" y="230" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 2.5 -->
+        <mxCell id="stage25-box" value="Stage 2.5: PyPI Fetch (NEW)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ff9800;strokeColor=#E65100;fontSize=13;fontStyle=1;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="650" y="180" width="220" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pypi-fetch" value="Fetch licenses from&#xa;PyPI API (Python)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffb74d;strokeColor=#E65100;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="660" y="230" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 3 -->
+        <mxCell id="stage3-box" value="Stage 3: ScanCode Scan" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#64b5f6;strokeColor=#0D47A1;fontSize=13;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="320" width="330" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="download" value="Download&#xa;source packages" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#90caf9;strokeColor=#0D47A1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="50" y="370" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="scancode" value="ScanCode scan&#xa;(file-level)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#90caf9;strokeColor=#0D47A1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="160" y="370" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="scancode-report" value="Generate&#xa;summary" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#90caf9;strokeColor=#0D47A1;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="270" y="370" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 4 -->
+        <mxCell id="stage4-box" value="Stage 4: Merge &amp; Validate" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#42a5f5;strokeColor=#01579B;fontSize=13;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="320" width="220" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="merge" value="Merge ScanCode&#xa;into SPDX" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#64b5f6;strokeColor=#01579B;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="410" y="370" width="90" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="validate" value="Validate &amp;&#xa;fix SPDX" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#64b5f6;strokeColor=#01579B;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="510" y="370" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 5 -->
+        <mxCell id="stage5-box" value="Stage 5: AI Curation (5 Reports)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8bbd0;strokeColor=#C2185B;fontSize=13;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="650" y="320" width="330" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ai-main" value="5a. Main&#xa;ORT Report" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#C2185B;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="660" y="370" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ai-conflict" value="5b. Conflict&#xa;Analysis" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#C2185B;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="750" y="370" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ai-missing" value="5c. Missing&#xa;Licenses AI" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#C2185B;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="840" y="370" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pypi-report" value="5d. PyPI&#xa;Fetch Report" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ff9800;strokeColor=#E65100;fontSize=10;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="660" y="430" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="comparison" value="5e. Multi-Layer&#xa;Comparison" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#9c27b0;strokeColor=#6A1B9A;fontSize=10;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="750" y="430" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ai-multilayer" value="5f. AI Multi-&#xa;Layer Resolve" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#673ab7;strokeColor=#4527A0;fontSize=10;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="840" y="430" width="80" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Check Azure -->
+        <mxCell id="check-azure" value="Check Azure&#xa;OpenAI configured?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffccbc;strokeColor=#BF360C;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="1010" y="355" width="140" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 6 -->
+        <mxCell id="stage6-box" value="Stage 6: Prepare Deployment" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b2dfdb;strokeColor=#00695C;fontSize=13;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="530" width="330" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mkdir" value="Create public/&#xa;directory" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b2dfdb;strokeColor=#00695C;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="50" y="580" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="copy-reports" value="Copy all&#xa;reports" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b2dfdb;strokeColor=#00695C;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="160" y="580" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="landing" value="Generate&#xa;landing page" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b2dfdb;strokeColor=#00695C;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="270" y="580" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 7 -->
+        <mxCell id="stage7-box" value="Stage 7: Deploy to GitHub Pages" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#80cbc4;strokeColor=#00796B;fontSize=13;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="530" width="220" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="deploy" value="actions/deploy-pages" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#80cbc4;strokeColor=#00796B;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="410" y="580" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 8 -->
+        <mxCell id="stage8-box" value="Stage 8: Upload Artifacts" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b0bec5;strokeColor=#455A64;fontSize=13;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="650" y="530" width="220" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="artifacts" value="Upload artifacts&#xa;(30-day retention)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0bec5;strokeColor=#455A64;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="660" y="580" width="200" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Final Outputs -->
+        <mxCell id="pages" value="GitHub Pages" style="ellipse;whiteSpace=wrap;html=1;fillColor=#4caf50;strokeColor=#2E7D32;fontSize=14;fontStyle=1;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="200" y="700" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="artifact-storage" value="Artifact Storage" style="cylinder3;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#757575;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="680" y="700" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Stakeholders -->
+        <mxCell id="stakeholders" value="Stakeholders&#xa;View Reports" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#F57F17;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="440" y="700" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows for trigger -->
+        <mxCell id="arrow-trigger1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="trigger" target="push">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow-trigger2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="trigger" target="pr">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow-trigger3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="trigger" target="schedule">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Stage flow arrows -->
+        <mxCell id="arrow1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="trigger" target="stage1-box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="120" y="140" />
+              <mxPoint x="205" y="140" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="arrow2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="stage1-box" target="stage2-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="stage2-box" target="stage25-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="stage25-box" target="stage3-box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="760" y="290" />
+              <mxPoint x="205" y="290" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="arrow5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="stage3-box" target="stage4-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="stage4-box" target="stage5-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="stage5-box" target="check-azure">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="check-azure" target="stage6-box">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1080" y="500" />
+              <mxPoint x="205" y="500" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="arrow9" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="stage6-box" target="stage7-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="stage7-box" target="stage8-box">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="deploy" target="pages">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="artifacts" target="artifact-storage">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="arrow13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2" edge="1" parent="1" source="pages" target="stakeholders">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Labels -->
+        <mxCell id="label-yes" value="Yes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="1020" y="470" width="30" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label-no" value="Skip AI" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="1090" y="385" width="50" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Title -->
+        <mxCell id="title" value="Complete GitHub Actions CI/CD Workflow - 8 Stages" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=20;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="300" y="830" width="600" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend-title" value="Legend:" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1020" y="530" width="60" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend1" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976D2;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="560" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend1-text" value="Analysis Stages" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1055" y="560" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend2" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8bbd0;strokeColor=#C2185B;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="590" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend2-text" value="AI Reports" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1055" y="590" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend3" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#b2dfdb;strokeColor=#00695C;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="620" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend3-text" value="Deployment" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1055" y="620" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend4" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#4caf50;strokeColor=#2E7D32;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="1020" y="650" width="30" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="legend4-text" value="Final Output" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1055" y="650" width="100" height="20" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

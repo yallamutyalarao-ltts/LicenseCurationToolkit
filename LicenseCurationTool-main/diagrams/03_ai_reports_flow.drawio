@@ -1,0 +1,300 @@
+<mxfile host="app.diagrams.net" modified="2025-01-15T12:00:00.000Z" agent="Claude" version="22.1.16">
+  <diagram name="AI Reports Generation Flow" id="ai-reports">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="AI-Powered Curation Reports - Generation Flow" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="800" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Input Data Sources -->
+        <mxCell id="data-label" value="INPUT DATA SOURCES" style="text;html=1;strokeColor=none;fillColor=#e3f2fd;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=1;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="200" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ort-data" value="ORT Results&#xa;analyzer-result.yml" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976D2;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="40" y="130" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pypi-data" value="PyPI Results&#xa;pypi-licenses-full.json" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe0b2;strokeColor=#E65100;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="200" y="130" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="scan-data" value="ScanCode Results&#xa;scancode-results/*.json" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#7B1FA2;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="360" y="130" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="uncertain-data" value="Uncertain Packages&#xa;uncertain-packages.json" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#F57F17;fontSize=12" vertex="1" parent="1">
+          <mxGeometry x="520" y="130" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Azure OpenAI Check -->
+        <mxCell id="azure-check" value="Azure OpenAI&#xa;Configured?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffccbc;strokeColor=#BF360C;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="260" y="240" width="140" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="skip-ai" value="❌ Skip AI&#xa;Reports" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f44336;strokeColor=#c62828;fontSize=14;fontStyle=1;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="480" y="260" width="120" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Report 1: Main ORT -->
+        <mxCell id="report1-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#9c27b0;dashed=1;dashPattern=5 5" vertex="1" parent="1">
+          <mxGeometry x="40" y="390" width="280" height="250" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report1-title" value="REPORT 1: Main ORT Curation" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#9c27b0" vertex="1" parent="1">
+          <mxGeometry x="60" y="400" width="240" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report1" value="curation-report-main.html" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ce93d8;strokeColor=#7B1FA2;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="60" y="440" width="240" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report1-model" value="Model: gpt-4.1-mini&#xa;Always runs if ORT completes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f3e5f5;strokeColor=#9c27b0;fontSize=10;align=left;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="60" y="490" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report1-content" value="• Executive summary&#xa;• License inventory&#xa;• Risk assessment&#xa;• Go/No-Go verdict" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="60" y="550" width="240" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Report 2: Conflicts -->
+        <mxCell id="report2-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ff9800;dashed=1;dashPattern=5 5" vertex="1" parent="1">
+          <mxGeometry x="360" y="390" width="280" height="250" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report2-title" value="REPORT 2: Conflict Analysis" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#ff9800" vertex="1" parent="1">
+          <mxGeometry x="380" y="400" width="240" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report2" value="curation-report-conflicts.html" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffb74d;strokeColor=#E65100;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="380" y="440" width="240" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report2-model" value="Model: gpt-4&#xa;Only if uncertain packages exist" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#ff9800;fontSize=10;align=left;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="380" y="490" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report2-content" value="• ORT vs ScanCode conflicts&#xa;• AI recommendations&#xa;• Risk levels&#xa;• Resolution steps&#xa;Max: 20 conflicts" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="380" y="550" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Report 3: Missing -->
+        <mxCell id="report3-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;dashed=1;dashPattern=5 5" vertex="1" parent="1">
+          <mxGeometry x="680" y="390" width="280" height="250" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report3-title" value="REPORT 3: Missing Licenses" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1;fontColor=#c2185b" vertex="1" parent="1">
+          <mxGeometry x="700" y="400" width="240" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report3" value="curation-report-missing.html" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f06292;strokeColor=#c2185b;fontSize=12;fontStyle=1;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="700" y="440" width="240" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report3-model" value="Model: gpt-4o-mini&#xa;Only if missing licenses exist" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#c2185b;fontSize=10;align=left;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="700" y="490" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report3-content" value="• AI suggested licenses&#xa;• Confidence levels&#xa;• Verification steps&#xa;• Risk assessment&#xa;Max: 15 packages" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="700" y="550" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Report 4: Comparison (NEW) -->
+        <mxCell id="report4-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#2e7d32;dashed=1;dashPattern=5 5" vertex="1" parent="1">
+          <mxGeometry x="1000" y="390" width="280" height="250" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report4-title" value="REPORT 4: Multi-Layer Comparison ⭐ NEW" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=13;fontStyle=1;fontColor=#2e7d32" vertex="1" parent="1">
+          <mxGeometry x="1020" y="400" width="240" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report4" value="license-comparison.html" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#66bb6a;strokeColor=#2e7d32;fontSize=12;fontStyle=1;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="1020" y="440" width="240" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report4-model" value="No AI Required&#xa;Pure comparison logic" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#2e7d32;fontSize=10;align=left;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="1020" y="490" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report4-content" value="• Side-by-side comparison&#xa;• ORT + PyPI + ScanCode&#xa;• Conflict detection&#xa;• Color-coded status&#xa;• Always runs" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="1020" y="550" width="240" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Report 5: AI Resolution (NEW) -->
+        <mxCell id="report5-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#f57f17;dashed=1;dashPattern=5 5" vertex="1" parent="1">
+          <mxGeometry x="1320" y="390" width="280" height="250" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report5-title" value="REPORT 5: AI Multi-Layer Resolution ⭐ NEW" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1;fontColor=#f57f17" vertex="1" parent="1">
+          <mxGeometry x="1340" y="400" width="240" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report5" value="ai-multilayer-resolution.html" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffeb3b;strokeColor=#f57f17;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1340" y="440" width="240" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report5-model" value="Model: gpt-4.1-mini&#xa;If conflicts or missing exist" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff9c4;strokeColor=#f57f17;fontSize=10;align=left;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="1340" y="490" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="report5-content" value="• ✅ Resolved packages (shown first)&#xa;• ⚠️ Conflicts with AI analysis&#xa;• ❌ Missing with AI research&#xa;• Actionable recommendations&#xa;Max: 15 conflicts + 10 missing" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=10;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="1340" y="550" width="240" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- Landing Page -->
+        <mxCell id="landing" value="Landing Page&#xa;index.html" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#c8e6c9;strokeColor=#2e7d32;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="660" y="720" width="280" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- GitHub Pages -->
+        <mxCell id="pages" value="GitHub Pages&#xa;https://username.github.io/repo/" style="ellipse;whiteSpace=wrap;html=1;fillColor=#4caf50;strokeColor=#2e7d32;fontSize=16;fontStyle=1;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="660" y="820" width="280" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Arrows from data -->
+        <mxCell id="a1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#1976D2" edge="1" parent="1" source="ort-data" target="azure-check">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#E65100;dashed=1" edge="1" parent="1" source="pypi-data" target="azure-check">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#7B1FA2;dashed=1" edge="1" parent="1" source="scan-data" target="azure-check">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#F57F17;dashed=1" edge="1" parent="1" source="uncertain-data" target="azure-check">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Skip path -->
+        <mxCell id="a-skip" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#f44336" edge="1" parent="1" source="azure-check" target="skip-ai">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Reports generation -->
+        <mxCell id="a-r1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=3;strokeColor=#9c27b0" edge="1" parent="1" source="azure-check" target="report1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="360" />
+              <mxPoint x="180" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="a-r2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#ff9800;dashed=1" edge="1" parent="1" source="azure-check" target="report2">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="360" />
+              <mxPoint x="500" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="a-r3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#c2185b;dashed=1" edge="1" parent="1" source="azure-check" target="report3">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="360" />
+              <mxPoint x="820" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="a-r4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#2e7d32" edge="1" parent="1" source="azure-check" target="report4">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="360" />
+              <mxPoint x="1140" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <mxCell id="a-r5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#f57f17;dashed=1" edge="1" parent="1" source="azure-check" target="report5">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="330" y="360" />
+              <mxPoint x="1460" y="360" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Reports to landing -->
+        <mxCell id="a-l1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#757575" edge="1" parent="1" source="report1-box" target="landing">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a-l2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#757575" edge="1" parent="1" source="report2-box" target="landing">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a-l3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#757575" edge="1" parent="1" source="report3-box" target="landing">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a-l4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#757575" edge="1" parent="1" source="report4-box" target="landing">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <mxCell id="a-l5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=2;strokeColor=#757575" edge="1" parent="1" source="report5-box" target="landing">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Landing to pages -->
+        <mxCell id="a-pages" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeWidth=4;strokeColor=#4caf50" edge="1" parent="1" source="landing" target="pages">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Labels -->
+        <mxCell id="label-yes" value="Yes - API Key Set" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=2;fontColor=#9c27b0" vertex="1" parent="1">
+          <mxGeometry x="230" y="360" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label-no" value="No API Key" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=2;fontColor=#f44336" vertex="1" parent="1">
+          <mxGeometry x="405" y="260" width="70" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label-conditional" value="Conditional" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=2;fontColor=#757575" vertex="1" parent="1">
+          <mxGeometry x="405" y="340" width="70" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label-always" value="Always Runs" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontStyle=2;fontColor=#9c27b0" vertex="1" parent="1">
+          <mxGeometry x="180" y="340" width="80" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend-box" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fafafa;strokeColor=#616161;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="720" width="300" height="200" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend-title" value="LEGEND" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=14;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="730" width="300" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend1" value="⬤ Solid Line = Required/Always" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="50" y="770" width="280" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend2" value="⬤ Dashed Line = Optional/Conditional" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="50" y="795" width="280" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend3" value="⭐ NEW = Recently Added Feature" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;spacingLeft=10" vertex="1" parent="1">
+          <mxGeometry x="50" y="820" width="280" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend4" value="⚠️ Advisory Only = Always Verify Manually" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;spacingLeft=10;fontColor=#f44336;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="50" y="845" width="280" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend5" value="All AI suggestions require manual verification!" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;spacingLeft=10;fontColor=#757575;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="50" y="880" width="280" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

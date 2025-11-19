@@ -1,0 +1,383 @@
+<mxfile host="app.diagrams.net" modified="2025-01-15T13:45:00.000Z" agent="Claude" version="22.1.16">
+  <diagram name="Execution Timeline" id="execution-timeline">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Timeline Axis -->
+        <mxCell id="time-label" value="Time (minutes)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="120" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t0" value="0" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="200" y="30" width="30" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t2" value="2" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="300" y="30" width="30" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t4" value="4" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="400" y="30" width="30" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t6" value="6" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="500" y="30" width="30" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t8" value="8" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="600" y="30" width="30" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t10" value="10" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="700" y="30" width="30" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t12" value="12" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="800" y="30" width="30" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t14" value="14" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="900" y="30" width="30" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="t16" value="16" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1000" y="30" width="30" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Timeline Grid Lines -->
+        <mxCell id="grid0" value="" style="line;strokeWidth=1;html=1;strokeColor=#CCCCCC;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="200" y="50" width="0" height="700" as="geometry" />
+        </mxCell>
+
+        <mxCell id="grid2" value="" style="line;strokeWidth=1;html=1;strokeColor=#CCCCCC;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="300" y="50" width="0" height="700" as="geometry" />
+        </mxCell>
+
+        <mxCell id="grid4" value="" style="line;strokeWidth=1;html=1;strokeColor=#CCCCCC;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="50" width="0" height="700" as="geometry" />
+        </mxCell>
+
+        <mxCell id="grid6" value="" style="line;strokeWidth=1;html=1;strokeColor=#CCCCCC;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="500" y="50" width="0" height="700" as="geometry" />
+        </mxCell>
+
+        <mxCell id="grid8" value="" style="line;strokeWidth=1;html=1;strokeColor=#CCCCCC;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="600" y="50" width="0" height="700" as="geometry" />
+        </mxCell>
+
+        <mxCell id="grid10" value="" style="line;strokeWidth=1;html=1;strokeColor=#CCCCCC;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="700" y="50" width="0" height="700" as="geometry" />
+        </mxCell>
+
+        <mxCell id="grid12" value="" style="line;strokeWidth=1;html=1;strokeColor=#CCCCCC;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="800" y="50" width="0" height="700" as="geometry" />
+        </mxCell>
+
+        <mxCell id="grid14" value="" style="line;strokeWidth=1;html=1;strokeColor=#CCCCCC;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="900" y="50" width="0" height="700" as="geometry" />
+        </mxCell>
+
+        <mxCell id="grid16" value="" style="line;strokeWidth=1;html=1;strokeColor=#CCCCCC;dashed=1" vertex="1" parent="1">
+          <mxGeometry x="1000" y="50" width="0" height="700" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 1: ORT Analyze (0-3 min) -->
+        <mxCell id="label1" value="Stage 1: ORT Analyzer" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="70" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar1" value="Dependencies" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976D2;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="200" y="70" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="time1" value="~3 min" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="360" y="70" width="40" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ORT Advise (parallel with Reporter) -->
+        <mxCell id="label1b" value="ORT Advisor" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="40" y="100" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar1b" value="Vulnerabilities" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#90caf9;strokeColor=#1565C0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="350" y="100" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="time1b" value="~2 min" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="460" y="100" width="40" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- ORT Reporter (parallel) -->
+        <mxCell id="label1c" value="ORT Reporter" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="40" y="130" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar1c" value="SPDX/SBOM" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#64b5f6;strokeColor=#0D47A1;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="350" y="130" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="time1c" value="~3 min" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="510" y="130" width="40" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 2: Extract (5-6 min) -->
+        <mxCell id="label2" value="Stage 2: Extract Uncertain" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="170" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar2" value="Find gaps" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#90caf9;strokeColor=#1565C0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="500" y="170" width="50" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="time2" value="~1 min" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="560" y="170" width="40" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 2.5: PyPI Fetch (6-7 min, NEW) -->
+        <mxCell id="label25" value="Stage 2.5: PyPI Fetch (NEW)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="200" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar25" value="API calls" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ff9800;strokeColor=#E65100;fontSize=10;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="550" y="200" width="50" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="time25" value="~1 min" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="610" y="200" width="40" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 3: ScanCode (7-12 min) -->
+        <mxCell id="label3" value="Stage 3: ScanCode (20 pkgs)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="240" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar3a" value="Download sources" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#64b5f6;strokeColor=#0D47A1;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="600" y="240" width="50" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar3b" value="Scan files (parallel)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#42a5f5;strokeColor=#01579B;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="650" y="240" width="200" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="time3" value="~5 min" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="860" y="240" width="40" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label3b" value="Generate summary" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="40" y="270" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar3c" value="Reports" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#64b5f6;strokeColor=#0D47A1;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="850" y="270" width="50" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 4: Merge &amp; Validate (12-13 min) -->
+        <mxCell id="label4" value="Stage 4: Merge &amp; Validate" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="310" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar4a" value="Merge" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#42a5f5;strokeColor=#01579B;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="900" y="310" width="30" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar4b" value="Validate" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#42a5f5;strokeColor=#01579B;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="930" y="310" width="30" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="time4" value="~1 min" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="970" y="310" width="40" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 5: AI Reports (13-16 min, parallel) -->
+        <mxCell id="label5" value="Stage 5: AI Reports (parallel)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="350" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar5a" value="Main AI" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#C2185B;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="960" y="350" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label5b" value="Conflict Analysis" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="40" y="380" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar5b" value="AI Conflicts" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#C2185B;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="960" y="380" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label5c" value="Missing Licenses" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="40" y="410" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar5c" value="AI Missing" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#C2185B;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="960" y="410" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label5d" value="Multi-Layer Comparison" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="40" y="440" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar5d" value="Comparison" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#9c27b0;strokeColor=#6A1B9A;fontSize=10;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="960" y="440" width="50" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="label5e" value="AI Multi-Layer Resolution" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11" vertex="1" parent="1">
+          <mxGeometry x="40" y="470" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar5e" value="AI Multi-Layer" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#673ab7;strokeColor=#4527A0;fontSize=10;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="960" y="470" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="time5" value="~3 min (parallel)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="1120" y="410" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 6: Prepare Deployment (16-17 min) -->
+        <mxCell id="label6" value="Stage 6: Prepare Deployment" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="510" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar6" value="Copy files + Landing page" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b2dfdb;strokeColor=#00695C;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1060" y="510" width="100" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="time6" value="~1 min" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="1170" y="510" width="40" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 7: Deploy (17-18 min, parallel with Stage 8) -->
+        <mxCell id="label7" value="Stage 7: Deploy to Pages" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="550" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar7" value="GitHub Pages" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#80cbc4;strokeColor=#00796B;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1160" y="550" width="50" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="time7" value="~1 min" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9;fontStyle=2" vertex="1" parent="1">
+          <mxGeometry x="1220" y="550" width="40" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Stage 8: Artifacts (parallel) -->
+        <mxCell id="label8" value="Stage 8: Upload Artifacts" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="580" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="bar8" value="Artifacts" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b0bec5;strokeColor=#455A64;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="1160" y="580" width="50" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Total Time -->
+        <mxCell id="total-label" value="Total Workflow Time:" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="630" width="150" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="total-time" value="~16-18 minutes (typical)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4caf50;strokeColor=#2E7D32;fontSize=12;fontStyle=1;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="200" y="630" width="200" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Optimization Notes -->
+        <mxCell id="opt-title" value="Optimization Techniques" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="480" y="630" width="200" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="opt1" value="✅ ORT Advisor + Reporter run in parallel" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="480" y="670" width="260" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="opt2" value="✅ ScanCode scans packages in parallel (concurrency)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="480" y="700" width="300" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="opt3" value="✅ All AI reports generated in parallel" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="480" y="730" width="260" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="opt4" value="✅ Deployment + Artifacts upload in parallel" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="820" y="670" width="260" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="opt5" value="✅ PyPI fetch reduces ScanCode scope by ~30-50%" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="820" y="700" width="300" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="opt6" value="✅ ScanCode limited to 20 packages (saves ~5-15 min)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10" vertex="1" parent="1">
+          <mxGeometry x="820" y="730" width="300" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- Comparison -->
+        <mxCell id="compare-title" value="Without Optimization vs. Optimized" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=12;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="780" width="300" height="30" as="geometry" />
+        </mxCell>
+
+        <mxCell id="compare-before" value="Before (Sequential):" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="820" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="compare-before-time" value="~30-40 minutes" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ef5350;strokeColor=#c62828;fontSize=11;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="200" y="820" width="120" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="compare-after" value="After (Parallel + PyPI):" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="40" y="850" width="150" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="compare-after-time" value="~16-18 minutes" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#66bb6a;strokeColor=#2E7D32;fontSize=11;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="200" y="850" width="120" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="compare-savings" value="⚡ 50-60% time savings" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#4caf50;strokeColor=#2E7D32;fontSize=12;fontStyle=1;fontColor=#FFFFFF" vertex="1" parent="1">
+          <mxGeometry x="360" y="830" width="200" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend-title" value="Legend:" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=11;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="1200" y="70" width="60" height="20" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend1" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#bbdefb;strokeColor=#1976D2;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="100" width="30" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="legend1-text" value="ORT Analysis" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9" vertex="1" parent="1">
+          <mxGeometry x="1235" y="100" width="80" height="15" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ff9800;strokeColor=#E65100;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="125" width="30" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="legend2-text" value="PyPI Fetch" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9" vertex="1" parent="1">
+          <mxGeometry x="1235" y="125" width="80" height="15" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend3" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#64b5f6;strokeColor=#0D47A1;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="150" width="30" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="legend3-text" value="ScanCode" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9" vertex="1" parent="1">
+          <mxGeometry x="1235" y="150" width="80" height="15" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend4" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f48fb1;strokeColor=#C2185B;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="175" width="30" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="legend4-text" value="AI Reports" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9" vertex="1" parent="1">
+          <mxGeometry x="1235" y="175" width="80" height="15" as="geometry" />
+        </mxCell>
+
+        <mxCell id="legend5" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#b2dfdb;strokeColor=#00695C;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="200" width="30" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="legend5-text" value="Deployment" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=9" vertex="1" parent="1">
+          <mxGeometry x="1235" y="200" width="80" height="15" as="geometry" />
+        </mxCell>
+
+        <!-- Title -->
+        <mxCell id="title" value="Workflow Execution Timeline - Parallel Optimization Gantt Chart" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=16;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="400" y="870" width="700" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

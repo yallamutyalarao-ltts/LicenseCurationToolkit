@@ -1,0 +1,308 @@
+# Advanced License Compliance Workflow
+# Copy this file to .github/workflows/license-compliance.yml in your repository
+
+name: Advanced License Compliance Check
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  license-compliance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Full history for license change detection
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r Advanced_License_Curation_Workflow/requirements.txt
+
+      - name: Install ORT
+        run: |
+          ORT_VERSION="70.0.1"
+          wget -q https://github.com/oss-review-toolkit/ort/releases/download/${ORT_VERSION}/ort-${ORT_VERSION}.tgz
+          tar -xzf ort-${ORT_VERSION}.tgz
+          echo "${PWD}/ort-${ORT_VERSION}/bin" >> $GITHUB_PATH
+
+      - name: Verify ORT installation
+        run: |
+          ort --version
+
+      # =======================================================================
+      # STAGE 1: ORT Analysis
+      # =======================================================================
+
+      - name: Run ORT Analyzer
+        run: |
+          mkdir -p ort-results/analyzer
+          ort analyze -i . -o ort-results/analyzer
+
+      # =======================================================================
+      # STAGE 2: Policy Compliance Check
+      # =======================================================================
+
+      - name: Check Policy Compliance
+        id: policy_check
+        run: |
+          python Advanced_License_Curation_Workflow/scripts/policy_checker.py \
+            --policy Advanced_License_Curation_Workflow/config/company-policy.yml \
+            --ort-results ort-results/analyzer/analyzer-result.yml \
+            --output policy-compliance-report.html \
+            --json policy-results.json
+        continue-on-error: true  # Don't fail immediately, generate reports first
+
+      # =======================================================================
+      # STAGE 3: License Change Detection
+      # =======================================================================
+
+      - name: Restore License History
+        uses: actions/cache@v3
+        with:
+          path: .ort/license-history.json
+          key: license-history-${{ github.ref }}
+          restore-keys: |
+            license-history-
+
+      - name: Initialize License Tracking (First Time)
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          python Advanced_License_Curation_Workflow/scripts/license_change_monitor.py --init \
+            --ort-results ort-results/analyzer/analyzer-result.yml \
+            --history .ort/license-history.json
+
+      - name: Check for License Changes
+        id: license_changes
+        run: |
+          python Advanced_License_Curation_Workflow/scripts/license_change_monitor.py --check \
+            --ort-results ort-results/analyzer/analyzer-result.yml \
+            --policy Advanced_License_Curation_Workflow/config/company-policy.yml \
+            --history .ort/license-history.json \
+            --output license-changes-report.html
+        continue-on-error: true
+
+      - name: Save License History
+        if: always()
+        uses: actions/cache@v3
+        with:
+          path: .ort/license-history.json
+          key: license-history-${{ github.ref }}-${{ github.run_id }}
+
+      # =======================================================================
+      # STAGE 4: Find Alternatives for Forbidden Packages (if any)
+      # =======================================================================
+
+      - name: Extract Forbidden Packages
+        id: extract_forbidden
+        run: |
+          python -c "
+          import json
+          with open('policy-results.json') as f:
+              data = json.load(f)
+          forbidden = [pkg for pkg in data['packages'] if pkg['policy_status'] == 'forbidden']
+          print(f'FORBIDDEN_COUNT={len(forbidden)}')
+          if forbidden:
+              print('FORBIDDEN_PACKAGES=' + ','.join([pkg['package_name'] for pkg in forbidden[:5]]))
+          " >> $GITHUB_OUTPUT || echo "FORBIDDEN_COUNT=0" >> $GITHUB_OUTPUT
+
+      - name: Find Alternative Packages
+        if: steps.extract_forbidden.outputs.FORBIDDEN_COUNT > 0
+        run: |
+          # This is a simplified version - in production, iterate over each forbidden package
+          echo "⚠️ Forbidden packages detected!"
+          echo "Run alternative package finder manually for each package"
+          # Example for first forbidden package:
+          # python Advanced_License_Curation_Workflow/scripts/alternative_package_finder.py \
+          #   --package "${{ steps.extract_forbidden.outputs.FORBIDDEN_PACKAGES }}" \
+          #   --type "PyPI" \
+          #   --policy Advanced_License_Curation_Workflow/config/company-policy.yml \
+          #   --output alternatives-report.html
+
+      # =======================================================================
+      # STAGE 5: Upload Reports
+      # =======================================================================
+
+      - name: Upload Reports as Artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: license-compliance-reports-${{ github.run_number }}
+          path: |
+            policy-compliance-report.html
+            license-changes-report.html
+            policy-results.json
+            .ort/license-history.json
+          retention-days: 30
+
+      # =======================================================================
+      # STAGE 6: Generate Summary
+      # =======================================================================
+
+      - name: Generate Summary
+        if: always()
+        run: |
+          python -c "
+          import json
+          with open('policy-results.json') as f:
+              data = json.load(f)
+          summary = data['summary']
+
+          print('## 📋 License Compliance Summary')
+          print()
+          print(f\"**Compliance Score:** {summary['compliance_score']}%\")
+          print()
+          print('| Status | Count |')
+          print('|--------|-------|')
+          print(f\"| ✅ Approved | {summary['approved']} |\")
+          print(f\"| ⚠️ Conditional | {summary['conditional']} |\")
+          print(f\"| ❌ Forbidden | {summary['forbidden']} |\")
+          print(f\"| ❓ Unknown | {summary['unknown']} |\")
+          print()
+          print('### Risk Breakdown')
+          print()
+          print(f\"- 🔴 Critical: {summary['risk_critical']}\")
+          print(f\"- 🟠 High: {summary['risk_high']}\")
+          print(f\"- 🟡 Medium: {summary['risk_medium']}\")
+          print(f\"- 🟢 Low: {summary['risk_low']}\")
+          " >> $GITHUB_STEP_SUMMARY
+
+      # =======================================================================
+      # STAGE 7: Comment on Pull Request
+      # =======================================================================
+
+      - name: Comment on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const fs = require('fs');
+
+            let results;
+            try {
+              results = JSON.parse(fs.readFileSync('policy-results.json', 'utf8'));
+            } catch (e) {
+              console.error('Could not read policy results');
+              return;
+            }
+
+            const summary = results.summary;
+
+            // Determine status emoji
+            let statusEmoji = '✅';
+            if (summary.forbidden > 0 || summary.risk_critical > 0) {
+              statusEmoji = '❌';
+            } else if (summary.conditional > 0 || summary.risk_high > 0) {
+              statusEmoji = '⚠️';
+            }
+
+            const comment = `## ${statusEmoji} License Compliance Report
+
+            **Compliance Score:** ${summary.compliance_score}%
+
+            ### Package Status
+            | Status | Count |
+            |--------|-------|
+            | ✅ Approved | ${summary.approved} |
+            | ⚠️ Conditional | ${summary.conditional} |
+            | ❌ Forbidden | ${summary.forbidden} |
+            | ❓ Unknown | ${summary.unknown} |
+
+            ### Risk Assessment
+            - 🔴 Critical: ${summary.risk_critical}
+            - 🟠 High: ${summary.risk_high}
+            - 🟡 Medium: ${summary.risk_medium}
+            - 🟢 Low: ${summary.risk_low}
+
+            ${summary.forbidden > 0 ? '⚠️ **ACTION REQUIRED:** Forbidden licenses detected! Review compliance report.' : ''}
+            ${summary.conditional > 0 ? '📋 **REVIEW NEEDED:** Some packages require approval.' : ''}
+
+            ---
+
+            📊 [View Full Report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            <details>
+            <summary>About this check</summary>
+
+            This automated check verifies that all dependencies comply with company license policy.
+
+            - **Approved licenses** can be used freely
+            - **Conditional licenses** require approval from legal/compliance
+            - **Forbidden licenses** cannot be used (find alternatives)
+            - **Unknown licenses** need manual research
+
+            </details>
+            `;
+
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment
+            });
+
+      # =======================================================================
+      # STAGE 8: Fail Build if Critical Issues
+      # =======================================================================
+
+      - name: Check Build Status
+        run: |
+          python -c "
+          import json
+          import sys
+          with open('policy-results.json') as f:
+              data = json.load(f)
+          summary = data['summary']
+
+          if summary['forbidden'] > 0:
+              print(f\"❌ FAIL: {summary['forbidden']} forbidden packages detected\")
+              sys.exit(1)
+
+          if summary['risk_critical'] > 0:
+              print(f\"❌ FAIL: {summary['risk_critical']} critical risk packages detected\")
+              sys.exit(1)
+
+          print('✅ PASS: No critical issues detected')
+          "
+
+      # =======================================================================
+      # STAGE 9: Deploy Reports (Optional - for main branch only)
+      # =======================================================================
+
+      - name: Deploy Reports to GitHub Pages
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          destination_dir: license-compliance
+          keep_files: false
+          enable_jekyll: false
+          publish_branch: gh-pages
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+          commit_message: 'Update license compliance reports'
+          exclude_assets: |
+            .git*
+            node_modules
+            ort-*
+            Advanced_License_Curation_Workflow
+
+      - name: Post Deployment URL
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+        run: |
+          echo "📊 Reports deployed to: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/license-compliance/policy-compliance-report.html"

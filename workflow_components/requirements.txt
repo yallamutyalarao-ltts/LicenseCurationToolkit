@@ -1,0 +1,16 @@
+# Advanced License Curation Workflow
+# Python dependencies
+
+# Core dependencies
+pyyaml>=6.0
+requests>=2.28.0
+
+# Optional: For enhanced features
+# python-inspector>=0.9.0  # For Python package inspection
+# scancode-toolkit>=32.0.0  # If running ScanCode locally
+# spdx-tools>=0.8.0  # For SPDX validation
+
+# Development dependencies (optional)
+# pytest>=7.0.0
+# black>=22.0.0
+# flake8>=5.0.0

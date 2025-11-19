@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(if [ -d \".github/workflows\" ])",
+      "Bash(then ls -la .github/workflows/)",
+      "Bash(else echo \"No .github/workflows directory\")",
+      "Bash(fi)",
+      "Bash(python test_pypi_classifier_parsing.py:*)",
+      "Bash(del test_pypi_classifier_parsing.py)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

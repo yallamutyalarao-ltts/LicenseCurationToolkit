@@ -1,0 +1,270 @@
+# Company License Policy Database
+# Define approved, conditional, and forbidden licenses for your organization
+
+company_license_policy:
+  company_name: "Your Company Name"
+  policy_version: "1.0.0"
+  last_updated: "2025-01-16"
+  contact: "compliance@yourcompany.com"
+
+  # ============================================================================
+  # APPROVED LICENSES - Can be used freely
+  # ============================================================================
+  approved_licenses:
+    permissive:
+      licenses:
+        - "MIT"
+        - "Apache-2.0"
+        - "BSD-2-Clause"
+        - "BSD-3-Clause"
+        - "BSD-3-Clause-Clear"
+        - "ISC"
+        - "Unlicense"
+        - "0BSD"
+        - "Python-2.0"
+        - "PSF-2.0"
+      description: "Unrestricted use, modification, and distribution"
+      risk_level: "low"
+      auto_approve: true
+      conditions: []
+
+    weak_copyleft:
+      licenses:
+        - "LGPL-2.1-only"
+        - "LGPL-2.1-or-later"
+        - "LGPL-3.0-only"
+        - "LGPL-3.0-or-later"
+        - "MPL-2.0"
+        - "EPL-1.0"
+        - "EPL-2.0"
+      description: "Copyleft for library changes only, safe for dynamic linking"
+      risk_level: "medium"
+      auto_approve: false
+      conditions:
+        - "Must be dynamically linked, NOT statically compiled"
+        - "Document usage in NOTICE file"
+        - "Distribute original library license with product"
+
+  # ============================================================================
+  # CONDITIONAL LICENSES - Requires approval from specified teams
+  # ============================================================================
+  conditional_licenses:
+    strong_copyleft:
+      licenses:
+        - "GPL-2.0-only"
+        - "GPL-2.0-or-later"
+        - "GPL-3.0-only"
+        - "GPL-3.0-or-later"
+        - "AGPL-3.0-only"
+        - "AGPL-3.0-or-later"
+      description: "Requires derivative works to be open-sourced under same license"
+      risk_level: "high"
+      auto_approve: false
+      approval_required: true
+      approvers:
+        - "legal@yourcompany.com"
+        - "compliance@yourcompany.com"
+      conditions:
+        - "Requires legal team approval before use"
+        - "Cannot be used in proprietary products without approval"
+        - "Acceptable for internal tools with legal review"
+        - "AGPL requires source disclosure for network use"
+      use_cases:
+        allowed:
+          - "Internal development tools"
+          - "Test infrastructure"
+          - "Open-source products"
+        forbidden:
+          - "Customer-facing proprietary products"
+          - "Embedded systems for sale"
+          - "SaaS products (AGPL especially)"
+
+    dual_licensed_with_commercial:
+      licenses:
+        - "GPL-2.0 WITH Classpath-exception-2.0"
+        - "LGPL-2.1 WITH Qt-LGPL-exception-1.1"
+      description: "Dual-licensed packages with commercial option available"
+      risk_level: "medium"
+      auto_approve: false
+      approval_required: true
+      approvers:
+        - "procurement@yourcompany.com"
+        - "legal@yourcompany.com"
+      conditions:
+        - "Consider purchasing commercial license"
+        - "Evaluate cost vs. compliance burden"
+        - "Document license choice and compliance requirements"
+
+  # ============================================================================
+  # FORBIDDEN LICENSES - Cannot be used under any circumstances
+  # ============================================================================
+  forbidden_licenses:
+    proprietary_restricted:
+      licenses:
+        - "SSPL-1.0"  # Server Side Public License (MongoDB)
+        - "Commons-Clause"
+        - "BUSL-1.1"  # Business Source License
+        - "Elastic-2.0"  # Elasticsearch License
+        - "Confluent-Community-1.0"
+        - "CPAL-1.0"  # Common Public Attribution License
+      reason: "Incompatible with company business model and proprietary products"
+      risk_level: "critical"
+      action: "reject"
+
+    unknown_custom:
+      licenses:
+        - "LicenseRef-Commercial-Only"
+        - "Proprietary"
+        - "UNKNOWN"
+        - "NOASSERTION"
+      reason: "License terms unclear or not open source"
+      risk_level: "high"
+      action: "research_required"
+
+    deprecated_problematic:
+      licenses:
+        - "JSON"  # "The Software shall be used for Good, not Evil" clause
+        - "WTFPL"  # Unprofessional, unclear legal standing
+        - "Beerware"  # Unclear license obligations
+      reason: "Deprecated, unclear terms, or unprofessional"
+      risk_level: "medium"
+      action: "find_alternative"
+
+  # ============================================================================
+  # LICENSE COMPATIBILITY MATRIX
+  # ============================================================================
+  license_compatibility:
+    # Permissive licenses are generally compatible with each other
+    - combination: "MIT AND Apache-2.0"
+      compatible: true
+      notes: "Both permissive, fully compatible"
+
+    - combination: "MIT AND BSD-3-Clause"
+      compatible: true
+      notes: "Both permissive, fully compatible"
+
+    # GPL compatibility issues
+    - combination: "MIT AND GPL-3.0-only"
+      compatible: false
+      reason: "GPL-3.0 requires entire work to be GPL-licensed (viral)"
+      severity: "high"
+
+    - combination: "Apache-2.0 AND GPL-2.0-only"
+      compatible: false
+      reason: "Apache-2.0 patent grant clause incompatible with GPL-2.0"
+      severity: "high"
+
+    - combination: "Apache-2.0 AND GPL-3.0-only"
+      compatible: true
+      notes: "GPL-3.0 fixed Apache-2.0 compatibility issue from GPL-2.0"
+      conditions:
+        - "Final product must be GPL-3.0 licensed"
+
+    - combination: "LGPL-3.0 AND GPL-3.0-only"
+      compatible: true
+      notes: "LGPL is compatible with GPL of same version or later"
+
+    # AGPL restrictions
+    - combination: "MIT AND AGPL-3.0-only"
+      compatible: false
+      reason: "AGPL requires network-accessible code to be disclosed"
+      severity: "critical"
+
+  # ============================================================================
+  # SPECIAL HANDLING RULES
+  # ============================================================================
+  special_rules:
+    # Packages with missing/unknown licenses
+    unknown_license_action: "flag_for_manual_research"  # Options: reject, research_required, flag_for_manual_research
+
+    # Multi-licensed packages (OR operator)
+    dual_license_strategy: "choose_most_permissive"  # Options: choose_most_permissive, manual_review, choose_approved
+
+    # License changes detected
+    license_change_severity:
+      permissive_to_copyleft: "critical"  # MIT -> GPL
+      copyleft_to_permissive: "review"     # GPL -> MIT (unusual, verify)
+      permissive_to_permissive: "low"      # MIT -> Apache
+      version_change_same_family: "medium" # GPL-2.0 -> GPL-3.0
+
+    # Timeout for approval requests
+    approval_timeout_days: 5
+    approval_timeout_action: "reject"  # Options: reject, auto_approve, extend
+
+  # ============================================================================
+  # ALTERNATIVE PACKAGE PREFERENCES
+  # ============================================================================
+  alternative_package_preferences:
+    # When searching for alternatives, prefer:
+    prefer_licenses:
+      - "MIT"
+      - "Apache-2.0"
+      - "BSD-3-Clause"
+
+    # Minimum package quality criteria
+    min_monthly_downloads: 1000
+    min_github_stars: 100
+    min_last_update_months: 12  # Must have been updated in last 12 months
+    require_active_maintenance: true
+
+    # Ranking weights for alternatives
+    ranking_weights:
+      license_compatibility: 0.40
+      popularity: 0.25
+      maintenance: 0.20
+      documentation: 0.10
+      security: 0.05
+
+  # ============================================================================
+  # NOTIFICATION SETTINGS
+  # ============================================================================
+  notifications:
+    email:
+      enabled: true
+      recipients:
+        - "compliance@yourcompany.com"
+        - "security@yourcompany.com"
+      events:
+        - "forbidden_license_detected"
+        - "license_change_detected"
+        - "approval_required"
+        - "policy_violation"
+
+    slack:
+      enabled: false
+      webhook_url: "https://hooks.slack.com/services/YOUR/WEBHOOK/URL"
+      channel: "#license-compliance"
+      events:
+        - "forbidden_license_detected"
+        - "license_change_detected"
+
+    severity_thresholds:
+      critical: "immediate"  # Send immediately
+      high: "daily_digest"   # Send daily summary
+      medium: "weekly_digest"
+      low: "monthly_digest"
+
+  # ============================================================================
+  # AUDIT & COMPLIANCE
+  # ============================================================================
+  audit:
+    enabled: true
+    retention_days: 365
+    log_file: ".ort/audit-log.json"
+    track_events:
+      - "policy_check_performed"
+      - "license_approved"
+      - "license_rejected"
+      - "alternative_suggested"
+      - "curation_applied"
+      - "manual_override"
+
+    compliance_reports:
+      generate_frequency: "weekly"  # daily, weekly, monthly
+      output_format: "html"  # html, pdf, json
+      include_sections:
+        - "executive_summary"
+        - "policy_violations"
+        - "pending_approvals"
+        - "license_changes"
+        - "risk_assessment"
