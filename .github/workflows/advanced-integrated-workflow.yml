@@ -120,7 +120,7 @@ jobs:
           echo "📊 Policy Compliance Summary:"
 
           # Extract summary using Python
-          python3 << 'EOF'
+          python3 <<'EOF'
 import json
 import sys
 import os
@@ -130,25 +130,25 @@ try:
         data = json.load(f)
         summary = data.get('summary', {})
 
-        print(f"  ✅ Approved:    {summary.get('approved', 0)}")
-        print(f"  ⚠️  Conditional: {summary.get('conditional', 0)}")
-        print(f"  ❌ Forbidden:   {summary.get('forbidden', 0)}")
-        print(f"  ❓ Unknown:     {summary.get('unknown', 0)}")
-        print(f"  📈 Compliance Score: {summary.get('compliance_score', 0)}%")
+    print(f"  ✅ Approved:    {summary.get('approved', 0)}")
+    print(f"  ⚠️  Conditional: {summary.get('conditional', 0)}")
+    print(f"  ❌ Forbidden:   {summary.get('forbidden', 0)}")
+    print(f"  ❓ Unknown:     {summary.get('unknown', 0)}")
+    print(f"  📈 Compliance Score: {summary.get('compliance_score', 0)}%")
 
-        # Add to GitHub summary
-        with open(os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null'), 'a') as summary_file:
-            summary_file.write("\n## 📋 License Policy Compliance\n\n")
-            summary_file.write(f"**Compliance Score:** {summary.get('compliance_score', 0)}%\n\n")
-            summary_file.write(f"- ✅ Approved: {summary.get('approved', 0)}\n")
-            summary_file.write(f"- ⚠️ Conditional: {summary.get('conditional', 0)}\n")
-            summary_file.write(f"- ❌ Forbidden: {summary.get('forbidden', 0)}\n")
-            summary_file.write(f"- ❓ Unknown: {summary.get('unknown', 0)}\n\n")
+    # Add to GitHub summary
+    with open(os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null'), 'a') as summary_file:
+        summary_file.write("\n## 📋 License Policy Compliance\n\n")
+        summary_file.write(f"**Compliance Score:** {summary.get('compliance_score', 0)}%\n\n")
+        summary_file.write(f"- ✅ Approved: {summary.get('approved', 0)}\n")
+        summary_file.write(f"- ⚠️ Conditional: {summary.get('conditional', 0)}\n")
+        summary_file.write(f"- ❌ Forbidden: {summary.get('forbidden', 0)}\n")
+        summary_file.write(f"- ❓ Unknown: {summary.get('unknown', 0)}\n\n")
 
-        # Fail if forbidden packages found
-        if summary.get('forbidden', 0) > 0:
-            print("\n❌ FORBIDDEN PACKAGES DETECTED!")
-            sys.exit(1)
+    # Fail if forbidden packages found
+    if summary.get('forbidden', 0) > 0:
+        print("\n❌ FORBIDDEN PACKAGES DETECTED!")
+        sys.exit(1)
 
 except Exception as e:
     print(f"Error reading policy results: {e}")
@@ -196,7 +196,7 @@ EOF
         if [ -f license-history/changes.json ]; then
           echo "📊 License Change Summary:"
 
-          python3 << 'EOF'
+          python3 <<'EOF'
 import json
 import sys
 import os
@@ -206,36 +206,36 @@ try:
         data = json.load(f)
         changes = data.get('changes', [])
 
-        critical = sum(1 for c in changes if c.get('severity') == 'critical')
-        high = sum(1 for c in changes if c.get('severity') == 'high')
-        medium = sum(1 for c in changes if c.get('severity') == 'medium')
-        low = sum(1 for c in changes if c.get('severity') == 'low')
+    critical = sum(1 for c in changes if c.get('severity') == 'critical')
+    high = sum(1 for c in changes if c.get('severity') == 'high')
+    medium = sum(1 for c in changes if c.get('severity') == 'medium')
+    low = sum(1 for c in changes if c.get('severity') == 'low')
 
-        print(f"  Total changes detected: {len(changes)}")
-        print(f"  ⛔ Critical: {critical}")
-        print(f"  ⚠️  High:     {high}")
-        print(f"  📋 Medium:   {medium}")
-        print(f"  ℹ️  Low:      {low}")
+    print(f"  Total changes detected: {len(changes)}")
+    print(f"  ⛔ Critical: {critical}")
+    print(f"  ⚠️  High:     {high}")
+    print(f"  📋 Medium:   {medium}")
+    print(f"  ℹ️  Low:      {low}")
 
-        # Add to GitHub summary
-        with open(os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null'), 'a') as summary_file:
-            summary_file.write("\n## 🔄 License Changes Detected\n\n")
-            summary_file.write(f"Total changes: {len(changes)}\n\n")
-            summary_file.write(f"- ⛔ Critical: {critical}\n")
-            summary_file.write(f"- ⚠️ High: {high}\n")
-            summary_file.write(f"- 📋 Medium: {medium}\n")
-            summary_file.write(f"- ℹ️ Low: {low}\n\n")
+    # Add to GitHub summary
+    with open(os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null'), 'a') as summary_file:
+        summary_file.write("\n## 🔄 License Changes Detected\n\n")
+        summary_file.write(f"Total changes: {len(changes)}\n\n")
+        summary_file.write(f"- ⛔ Critical: {critical}\n")
+        summary_file.write(f"- ⚠️ High: {high}\n")
+        summary_file.write(f"- 📋 Medium: {medium}\n")
+        summary_file.write(f"- ℹ️ Low: {low}\n\n")
 
-        # Fail if critical changes detected
-        if critical > 0:
-            print("\n❌ CRITICAL LICENSE CHANGES DETECTED!")
-            for change in changes:
-                if change.get('severity') == 'critical':
-                    pkg = change.get('package_name', 'Unknown')
-                    prev_lic = change.get('previous_license', 'Unknown')
-                    curr_lic = change.get('current_license', 'Unknown')
-                    print(f"   {pkg}: {prev_lic} → {curr_lic}")
-            sys.exit(1)
+    # Fail if critical changes detected
+    if critical > 0:
+        print("\n❌ CRITICAL LICENSE CHANGES DETECTED!")
+        for change in changes:
+            if change.get('severity') == 'critical':
+                pkg = change.get('package_name', 'Unknown')
+                prev_lic = change.get('previous_license', 'Unknown')
+                curr_lic = change.get('current_license', 'Unknown')
+                print(f"   {pkg}: {prev_lic} → {curr_lic}")
+        sys.exit(1)
 
 except Exception as e:
     print(f"Error reading license changes: {e}")
@@ -255,7 +255,7 @@ EOF
         fi
 
         # Extract forbidden packages and find alternatives
-        python3 << 'EOF'
+        python3 <<'EOF'
 import json
 import subprocess
 import sys
