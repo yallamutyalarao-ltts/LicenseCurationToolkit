@@ -123,6 +123,7 @@ jobs:
           python3 << 'EOF'
 import json
 import sys
+import os
 
 try:
     with open('policy-reports/policy-results.json', 'r') as f:
@@ -136,7 +137,7 @@ try:
         print(f"  📈 Compliance Score: {summary.get('compliance_score', 0)}%")
 
         # Add to GitHub summary
-        with open(process.env.get('GITHUB_STEP_SUMMARY', '/dev/null'), 'a') as summary_file:
+        with open(os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null'), 'a') as summary_file:
             summary_file.write("\n## 📋 License Policy Compliance\n\n")
             summary_file.write(f"**Compliance Score:** {summary.get('compliance_score', 0)}%\n\n")
             summary_file.write(f"- ✅ Approved: {summary.get('approved', 0)}\n")
@@ -198,6 +199,7 @@ EOF
           python3 << 'EOF'
 import json
 import sys
+import os
 
 try:
     with open('license-history/changes.json', 'r') as f:
