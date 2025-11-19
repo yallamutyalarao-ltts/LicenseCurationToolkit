@@ -119,8 +119,8 @@ jobs:
         if [ -f policy-reports/policy-results.json ]; then
           echo "📊 Policy Compliance Summary:"
 
-          # Extract summary using Python
-          python3 <<'EOF'
+          # Extract and display summary using Python
+          cat > display_policy_summary.py << 'EOF'
 import json
 import sys
 import os
@@ -137,7 +137,8 @@ try:
     print(f"  📈 Compliance Score: {summary.get('compliance_score', 0)}%")
 
     # Add to GitHub summary
-    with open(os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null'), 'a') as summary_file:
+    summary_file_path = os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null')
+    with open(summary_file_path, 'a') as summary_file:
         summary_file.write("\n## 📋 License Policy Compliance\n\n")
         summary_file.write(f"**Compliance Score:** {summary.get('compliance_score', 0)}%\n\n")
         summary_file.write(f"- ✅ Approved: {summary.get('approved', 0)}\n")
@@ -154,6 +155,8 @@ except Exception as e:
     print(f"Error reading policy results: {e}")
     sys.exit(0)
 EOF
+
+          python3 display_policy_summary.py
         fi
       continue-on-error: true
 
@@ -196,7 +199,7 @@ EOF
         if [ -f license-history/changes.json ]; then
           echo "📊 License Change Summary:"
 
-          python3 <<'EOF'
+          cat > display_change_summary.py << 'EOF'
 import json
 import sys
 import os
@@ -218,7 +221,8 @@ try:
     print(f"  ℹ️  Low:      {low}")
 
     # Add to GitHub summary
-    with open(os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null'), 'a') as summary_file:
+    summary_file_path = os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null')
+    with open(summary_file_path, 'a') as summary_file:
         summary_file.write("\n## 🔄 License Changes Detected\n\n")
         summary_file.write(f"Total changes: {len(changes)}\n\n")
         summary_file.write(f"- ⛔ Critical: {critical}\n")
@@ -241,6 +245,8 @@ except Exception as e:
     print(f"Error reading license changes: {e}")
     sys.exit(0)
 EOF
+
+          python3 display_change_summary.py
         fi
       continue-on-error: true
 
@@ -255,7 +261,7 @@ EOF
         fi
 
         # Extract forbidden packages and find alternatives
-        python3 <<'EOF'
+        cat > find_alternatives.py << 'EOF'
 import json
 import subprocess
 import sys
@@ -306,6 +312,7 @@ except Exception as e:
     sys.exit(0)
 EOF
 
+        python3 find_alternatives.py
         echo "✅ Alternative package search complete"
       continue-on-error: true
 
