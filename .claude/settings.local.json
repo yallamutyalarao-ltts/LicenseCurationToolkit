@@ -4,7 +4,8 @@
       "Bash(xcopy:*)",
       "Bash(tree:*)",
       "Bash(python3:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(findstr:*)"
     ],
     "deny": [],
     "ask": []

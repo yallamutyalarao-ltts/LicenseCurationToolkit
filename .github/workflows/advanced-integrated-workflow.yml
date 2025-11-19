@@ -818,6 +818,80 @@ jobs:
         fi
       continue-on-error: true
 
+    # ====== STAGE 9.5: Smart Curation Engine ======
+    - name: Generate Smart Curation Suggestions
+      run: |
+        echo "🤖 Stage 9.5: Running Smart Curation Engine..."
+
+        # Build parameters for available data sources
+        POLICY_PARAM=""
+        ORT_PARAM=""
+        PYPI_PARAM=""
+        SCANCODE_PARAM=""
+
+        # Check for policy results
+        if [ -f "policy-reports/policy-results.json" ]; then
+          POLICY_PARAM="--policy-json policy-reports/policy-results.json"
+          echo "  ✓ Policy results found"
+        fi
+
+        # Check for ORT results
+        if [ -f "ort-results/analyzer/analyzer-result.yml" ]; then
+          ORT_PARAM="--ort-results ort-results/analyzer/analyzer-result.yml"
+          echo "  ✓ ORT results found"
+        fi
+
+        # Check for PyPI results
+        if [ -f "pypi-licenses/pypi-licenses-full.json" ]; then
+          PYPI_PARAM="--pypi-json pypi-licenses/pypi-licenses-full.json"
+          echo "  ✓ PyPI results found"
+        fi
+
+        # Check for ScanCode results
+        if [ -d "scancode-results" ] && [ "$(ls -A scancode-results)" ]; then
+          SCANCODE_PARAM="--scancode-dir scancode-results"
+          echo "  ✓ ScanCode results found"
+        fi
+
+        # Run smart curation engine
+        python3 workflow_components/scripts/smart_curation_engine.py \
+          --policy workflow_components/config/company-policy.yml \
+          $POLICY_PARAM \
+          $ORT_PARAM \
+          $PYPI_PARAM \
+          $SCANCODE_PARAM \
+          --output-curations smart-curations.yml \
+          --output-review manual-review-queue.html \
+          --output-stats curation-stats.json 2>&1 | tee smart-curation.log
+
+        # Display results
+        if [ -f "curation-stats.json" ]; then
+          echo ""
+          echo "📊 Smart Curation Summary:"
+          cat > display_curation_stats.py << 'EOF'
+import json
+import sys
+
+try:
+    with open('curation-stats.json', 'r') as f:
+        stats = json.load(f)
+
+    print(f"  Total Packages Analyzed: {stats.get('total_packages', 0)}")
+    print(f"  Curation Suggestions: {stats.get('total_curations', 0)}")
+    print(f"  High Confidence: {stats.get('high_confidence', 0)}")
+    print(f"  Manual Review Required: {stats.get('manual_review_required', 0)}")
+
+except Exception as e:
+    print(f"Error reading stats: {e}")
+    sys.exit(0)
+EOF
+
+          python3 display_curation_stats.py
+        fi
+
+        echo "✅ Smart curation engine completed"
+      continue-on-error: true
+
     # ====== STAGE 10: Prepare GitHub Pages ======
     - name: Prepare Pages Deployment
       run: |
@@ -938,6 +1012,22 @@ jobs:
           echo "  ✓ PyPI license fetch results"
         fi
 
+        # Copy Smart Curation results
+        if [ -f manual-review-queue.html ]; then
+          cp manual-review-queue.html public/
+          echo "  ✓ Smart curation manual review queue"
+        fi
+
+        if [ -f smart-curations.yml ]; then
+          cp smart-curations.yml public/
+          echo "  ✓ Smart curation suggestions"
+        fi
+
+        if [ -f curation-stats.json ]; then
+          cp curation-stats.json public/
+          echo "  ✓ Curation statistics"
+        fi
+
         # Copy background image
         if [ -f background.jpg ] || [ -f background.png ]; then
           cp background.* public/ 2>/dev/null || true
@@ -951,6 +1041,100 @@ jobs:
         python3 workflow_components/scripts/generate_landing_page.py public
 
         echo "✅ Landing page generated with all available reports"
+
+    # ====== STAGE 10.5: Generate Compliance Dashboard ======
+    - name: Generate Unified Compliance Dashboard
+      run: |
+        echo "📊 Stage 10.5: Generating Compliance Dashboard..."
+
+        # Build parameters for dashboard
+        POLICY_JSON_PARAM=""
+        CHANGES_JSON_PARAM=""
+        CURATION_STATS_PARAM=""
+
+        # Check for policy results JSON
+        if [ -f "policy-reports/policy-results.json" ]; then
+          POLICY_JSON_PARAM="--policy-json policy-reports/policy-results.json"
+          echo "  ✓ Policy results JSON found"
+        fi
+
+        # Check for license changes JSON (need to create it if we have the HTML)
+        if [ -f ".ort/license-history.json" ]; then
+          # Extract changes for dashboard
+          cat > extract_changes.py << 'EOF'
+import json
+import sys
+
+try:
+    with open('.ort/license-history.json', 'r') as f:
+        history = json.load(f)
+
+    changes_list = []
+    for pkg_id, pkg_data in history.get('packages', {}).items():
+        if pkg_data.get('change_detected'):
+            changes_list.append({
+                'package': pkg_id,
+                'old_license': pkg_data.get('previous_license', 'UNKNOWN'),
+                'new_license': pkg_data.get('current_license', 'UNKNOWN'),
+                'severity': pkg_data.get('severity', 'UNKNOWN')
+            })
+
+    output = {
+        'changes': changes_list,
+        'total_scans': history.get('total_scans', 0)
+    }
+
+    with open('license-changes.json', 'w') as f:
+        json.dump(output, f, indent=2)
+
+    print(f"Extracted {len(changes_list)} changes")
+
+except Exception as e:
+    print(f"Error: {e}")
+    # Create empty changes file
+    with open('license-changes.json', 'w') as f:
+        json.dump({'changes': [], 'total_scans': 0}, f)
+EOF
+
+          python3 extract_changes.py
+          CHANGES_JSON_PARAM="--changes-json license-changes.json"
+          echo "  ✓ License changes extracted"
+        fi
+
+        # Check for curation stats
+        if [ -f "curation-stats.json" ]; then
+          CURATION_STATS_PARAM="--curation-stats curation-stats.json"
+          echo "  ✓ Curation statistics found"
+        fi
+
+        # Generate compliance dashboard
+        python3 workflow_components/scripts/compliance_dashboard.py \
+          $POLICY_JSON_PARAM \
+          $CHANGES_JSON_PARAM \
+          $CURATION_STATS_PARAM \
+          --reports-dir public \
+          --output compliance-dashboard.html 2>&1 | tee dashboard.log
+
+        # Copy to public directory
+        if [ -f compliance-dashboard.html ] && [ -s compliance-dashboard.html ]; then
+          cp compliance-dashboard.html public/
+          echo "✅ Compliance dashboard generated ($(wc -c < compliance-dashboard.html) bytes)"
+
+          # Display summary
+          if [ -f "curation-stats.json" ]; then
+            echo ""
+            echo "📊 Dashboard includes:"
+            echo "  • Policy compliance status"
+            echo "  • License change alerts"
+            echo "  • Smart curation suggestions"
+            echo "  • Overall risk assessment"
+            echo "  • Priority action items"
+          fi
+        else
+          echo "⚠️  Dashboard generation failed, check dashboard.log"
+          cat dashboard.log || true
+        fi
+      continue-on-error: true
 
     # ====== STAGE 11: Deploy to GitHub Pages ======
     - name: Setup Pages

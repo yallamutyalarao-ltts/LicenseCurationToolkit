@@ -25,6 +25,10 @@ def generate_landing_page(public_dir='public'):
     scancode_html = ''
     scancode_yaml = ''
     pypi_html_report = ''
+    compliance_dashboard = ''
+    policy_compliance = ''
+    license_changes = ''
+    manual_review_queue = ''
 
     # Find files
     for file in public_path.glob('*web-app*.html'):
@@ -71,6 +75,19 @@ def generate_landing_page(public_dir='public'):
     if (public_path / 'pypi-licenses-report.html').exists():
         pypi_html_report = 'pypi-licenses-report.html'
 
+    # Advanced Policy Management Reports
+    if (public_path / 'compliance-dashboard.html').exists():
+        compliance_dashboard = 'compliance-dashboard.html'
+
+    if (public_path / 'policy-compliance-report.html').exists():
+        policy_compliance = 'policy-compliance-report.html'
+
+    if (public_path / 'license-changes-report.html').exists():
+        license_changes = 'license-changes-report.html'
+
+    if (public_path / 'manual-review-queue.html').exists():
+        manual_review_queue = 'manual-review-queue.html'
+
     # Find individual ScanCode package reports
     scancode_reports_dir = public_path / 'scancode-reports'
     scancode_package_reports = []
@@ -99,6 +116,10 @@ def generate_landing_page(public_dir='public'):
     print(f"  ScanCode YAML: {scancode_yaml or 'N/A'}")
     print(f"  PyPI HTML Report: {pypi_html_report or 'N/A'}")
     print(f"  ScanCode Package Reports: {len(scancode_package_reports)} packages")
+    print(f"  Compliance Dashboard: {compliance_dashboard or 'N/A'}")
+    print(f"  Policy Compliance: {policy_compliance or 'N/A'}")
+    print(f"  License Changes: {license_changes or 'N/A'}")
+    print(f"  Manual Review Queue: {manual_review_queue or 'N/A'}")
 
     # Generate HTML
     html = '''<!DOCTYPE html>
@@ -198,6 +219,46 @@ def generate_landing_page(public_dir='public'):
     <p class="subtitle">Multi-Tool License Compliance Analysis <span class="badge">ENHANCED</span></p>
 
     <div class="report-grid">
+'''
+
+    # Add Compliance Dashboard (MOST PROMINENT)
+    if compliance_dashboard:
+        html += f'''
+      <a href="{compliance_dashboard}" class="report-card highlight">
+        <div class="report-icon">📊</div>
+        <div class="report-title">Compliance Dashboard <span class="badge">EXECUTIVE SUMMARY</span></div>
+        <div class="report-desc">Unified view of all compliance metrics - policy status, license changes, risk assessment, and action items</div>
+      </a>
+'''
+
+    # Add Policy Compliance Report
+    if policy_compliance:
+        html += f'''
+      <a href="{policy_compliance}" class="report-card highlight">
+        <div class="report-icon">✅</div>
+        <div class="report-title">Policy Compliance Report <span class="badge">POLICY CHECK</span></div>
+        <div class="report-desc">Package compliance against company license policy - approved, conditional, forbidden, unknown packages</div>
+      </a>
+'''
+
+    # Add License Changes Report
+    if license_changes:
+        html += f'''
+      <a href="{license_changes}" class="report-card highlight">
+        <div class="report-icon">🔄</div>
+        <div class="report-title">License Change Alerts <span class="badge">MONITORING</span></div>
+        <div class="report-desc">Historical license tracking with severity assessment and recommended actions for detected changes</div>
+      </a>
+'''
+
+    # Add Manual Review Queue (Smart Curation)
+    if manual_review_queue:
+        html += f'''
+      <a href="{manual_review_queue}" class="report-card highlight">
+        <div class="report-icon">🔍</div>
+        <div class="report-title">Smart Curation Review Queue <span class="badge">REQUIRES REVIEW</span></div>
+        <div class="report-desc">Packages requiring manual verification with confidence scores and evidence from multiple sources</div>
+      </a>
 '''
 
     # Add AI main curation report

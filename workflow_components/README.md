@@ -1,6 +1,6 @@
 # Advanced License Curation Workflow Components
 
-> Comprehensive solution for ORT license analysis with policy enforcement, change monitoring, and alternative package recommendations
+> Comprehensive solution for ORT license analysis with policy enforcement, change monitoring, alternative package recommendations, Smart Curation Engine, and Compliance Dashboard
 
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![ORT](https://img.shields.io/badge/ORT-70.0.1-green.svg)](https://github.com/oss-review-toolkit/ort)
@@ -263,6 +263,78 @@ python3 scripts/alternative_package_finder.py \
   --output alternatives-pycutest.html \
   --max-results 5
 ```
+
+#### 4. `smart_curation_engine.py` ⭐ NEW
+**Purpose:** Combine multi-source evidence to generate intelligent curation suggestions
+
+**Features:**
+- Consolidates data from policy checker, ORT, PyPI, ScanCode
+- Confidence scoring for each curation suggestion
+- Evidence-based recommendations
+- Automatic high-confidence curations
+- Manual review queue for uncertain cases
+
+**Usage:**
+```bash
+python3 scripts/smart_curation_engine.py \
+  --policy config/company-policy.yml \
+  --policy-json policy-reports/policy-results.json \
+  --ort-results ort-results/analyzer/analyzer-result.yml \
+  --pypi-json pypi-licenses/pypi-licenses-full.json \
+  --scancode-dir scancode-results \
+  --output-curations smart-curations.yml \
+  --output-review manual-review-queue.html \
+  --output-stats curation-stats.json
+```
+
+**Outputs:**
+- `smart-curations.yml` - High-confidence curation suggestions (≥70%)
+- `manual-review-queue.html` - Beautiful HTML report for packages requiring manual verification
+- `curation-stats.json` - Statistics summary (total packages, confidence distribution)
+
+**Key Features:**
+- **Multi-Source Evidence:** Combines ORT declared/concluded, PyPI API, ScanCode detections
+- **Confidence Scoring:** 0-100% confidence based on source agreement and policy compliance
+- **Smart Filtering:** Only suggests curations for uncertain packages (skips already approved)
+- **Manual Review Workflow:** Flags low-confidence suggestions (<70%) for human verification
+
+#### 5. `compliance_dashboard.py` ⭐ NEW
+**Purpose:** Generate unified executive dashboard for all compliance metrics
+
+**Features:**
+- Overall compliance score and risk assessment
+- Policy compliance breakdown (approved/conditional/forbidden/unknown)
+- License change alerts summary
+- Smart curation statistics
+- Priority action items (sorted by severity)
+- Links to all detailed reports
+
+**Usage:**
+```bash
+python3 scripts/compliance_dashboard.py \
+  --policy-json policy-reports/policy-results.json \
+  --changes-json license-changes.json \
+  --curation-stats curation-stats.json \
+  --reports-dir public \
+  --output compliance-dashboard.html
+```
+
+**Outputs:**
+- `compliance-dashboard.html` - Executive-level compliance overview
+
+**Dashboard Includes:**
+- 📊 **Overall Compliance Score** - Weighted average with risk level (LOW/MEDIUM/HIGH/CRITICAL)
+- ✅ **Policy Compliance** - Visual breakdown with percentage bars
+- 🔄 **License Changes** - Summary by severity (Critical/High/Medium/Low)
+- 🤖 **Smart Curation Results** - Total suggestions and manual review count
+- ⚡ **Priority Action Items** - Top 10 actions sorted by urgency
+- 📄 **Available Reports** - Auto-detected links to all generated reports
+
+**Risk Calculation:**
+- Base score from policy compliance
+- Penalties for critical changes (-10% each, max -20%)
+- Penalties for forbidden packages (-15% each, max -30%)
+- Risk levels: >90% = LOW, 75-90% = MEDIUM, 60-75% = HIGH, <60% = CRITICAL
 
 ### Configuration (`config/`)
 
