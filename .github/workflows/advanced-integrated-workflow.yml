@@ -627,46 +627,46 @@ jobs:
             echo ""
             echo "📊 NTIA Compliance Summary:"
             python3 << 'EOF'
-import json
-import os
+            import json
+            import os
 
-with open('sbom-compliance/ntia-compliance.json', 'r') as f:
-    data = json.load(f)
+            with open('sbom-compliance/ntia-compliance.json', 'r') as f:
+                data = json.load(f)
 
-score = data.get('compliance_score', 0)
-compliant = data.get('ntia_compliant', False)
-total_pkgs = data.get('total_packages', 0)
-missing_author = len(data.get('missing_author', []))
-missing_version = len(data.get('missing_version', []))
-missing_license = len(data.get('missing_license', []))
+            score = data.get('compliance_score', 0)
+            compliant = data.get('ntia_compliant', False)
+            total_pkgs = data.get('total_packages', 0)
+            missing_author = len(data.get('missing_author', []))
+            missing_version = len(data.get('missing_version', []))
+            missing_license = len(data.get('missing_license', []))
 
-print(f"  Compliance Score: {score}%")
-print(f"  Status: {'✅ COMPLIANT' if compliant and score >= 90 else '⚠️ NEEDS IMPROVEMENT'}")
-print(f"  Total Packages: {total_pkgs}")
-print(f"  Missing Elements:")
-print(f"    - Author/Supplier: {missing_author}")
-print(f"    - Version: {missing_version}")
-print(f"    - License: {missing_license}")
+            print(f"  Compliance Score: {score}%")
+            print(f"  Status: {'✅ COMPLIANT' if compliant and score >= 90 else '⚠️ NEEDS IMPROVEMENT'}")
+            print(f"  Total Packages: {total_pkgs}")
+            print(f"  Missing Elements:")
+            print(f"    - Author/Supplier: {missing_author}")
+            print(f"    - Version: {missing_version}")
+            print(f"    - License: {missing_license}")
 
-# Add to GitHub summary
-summary_file = os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null')
-with open(summary_file, 'a') as f:
-    f.write("\n## 📊 SBOM Compliance (NTIA)\n\n")
-    f.write(f"**Compliance Score:** {score}%\n\n")
-    f.write(f"**Status:** {'✅ COMPLIANT' if compliant and score >= 90 else '⚠️ NEEDS IMPROVEMENT'}\n\n")
-    f.write(f"- Total Packages: {total_pkgs}\n")
-    f.write(f"- Missing Author: {missing_author}\n")
-    f.write(f"- Missing Version: {missing_version}\n")
-    f.write(f"- Missing License: {missing_license}\n\n")
-    if score >= 95:
-        f.write("🎉 Excellent SBOM quality!\n")
-    elif score >= 90:
-        f.write("✅ SBOM meets NTIA minimum requirements\n")
-    elif score >= 75:
-        f.write("⚠️ SBOM needs improvement to meet NTIA standards\n")
-    else:
-        f.write("❌ SBOM requires significant improvements\n")
-EOF
+            # Add to GitHub summary
+            summary_file = os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null')
+            with open(summary_file, 'a') as f:
+                f.write("\n## 📊 SBOM Compliance (NTIA)\n\n")
+                f.write(f"**Compliance Score:** {score}%\n\n")
+                f.write(f"**Status:** {'✅ COMPLIANT' if compliant and score >= 90 else '⚠️ NEEDS IMPROVEMENT'}\n\n")
+                f.write(f"- Total Packages: {total_pkgs}\n")
+                f.write(f"- Missing Author: {missing_author}\n")
+                f.write(f"- Missing Version: {missing_version}\n")
+                f.write(f"- Missing License: {missing_license}\n\n")
+                if score >= 95:
+                    f.write("🎉 Excellent SBOM quality!\n")
+                elif score >= 90:
+                    f.write("✅ SBOM meets NTIA minimum requirements\n")
+                elif score >= 75:
+                    f.write("⚠️ SBOM needs improvement to meet NTIA standards\n")
+                else:
+                    f.write("❌ SBOM requires significant improvements\n")
+            EOF
           fi
 
           echo "✅ NTIA compliance report generated"
