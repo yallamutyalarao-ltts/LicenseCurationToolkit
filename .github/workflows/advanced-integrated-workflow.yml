@@ -537,13 +537,141 @@ jobs:
     - name: Validate enhanced SPDX
       run: |
         if [ -f enhanced-spdx/bom-enhanced.spdx.json ]; then
-          echo "✅ Validating enhanced SPDX document..."
-          pyspdxtools -i enhanced-spdx/bom-enhanced.spdx.json --validate || true
+          echo "✅ Validating enhanced SPDX document with official validator..."
 
-          # Also fix any issues with our validator
+          # Run official SPDX validation with detailed error reporting
+          pyspdxtools -i enhanced-spdx/bom-enhanced.spdx.json --validate > spdx-validation.log 2>&1 || {
+            echo "⚠️ SPDX validation issues found:"
+            cat spdx-validation.log
+
+            # Add validation report to GitHub summary
+            echo "## 📋 SPDX Validation Report" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            head -20 spdx-validation.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+          }
+
+          # Fix ORT-specific SPDX issues with our custom validator
+          echo "🔧 Fixing ORT-specific SPDX issues..."
           python3 workflow_components/scripts/spdx-validation-fixer.py \
             -i enhanced-spdx/bom-enhanced.spdx.json \
             -o enhanced-spdx/bom-enhanced-fixed.spdx.json
+
+          # Validate fixed document
+          echo "✅ Validating fixed SPDX document..."
+          pyspdxtools -i enhanced-spdx/bom-enhanced-fixed.spdx.json --validate || true
+        fi
+      continue-on-error: true
+
+    # ====== STAGE 8c: SPDX Format Conversion ======
+    - name: Convert SPDX to multiple formats
+      run: |
+        echo "🔄 Stage 8c: Converting SPDX to multiple formats..."
+
+        mkdir -p spdx-formats
+
+        if [ -f enhanced-spdx/bom-enhanced-fixed.spdx.json ]; then
+          echo "Converting SPDX document to multiple formats for compatibility..."
+
+          # JSON to YAML (easier for version control and diffs)
+          echo "  📄 Converting to YAML..."
+          pyspdxtools -i enhanced-spdx/bom-enhanced-fixed.spdx.json \
+                      -o spdx-formats/bom.spdx.yml || echo "  ⚠️ YAML conversion skipped"
+
+          # JSON to Tag-Value (human-readable format for audits)
+          echo "  📄 Converting to Tag-Value..."
+          pyspdxtools -i enhanced-spdx/bom-enhanced-fixed.spdx.json \
+                      -o spdx-formats/bom.spdx.tv || echo "  ⚠️ Tag-Value conversion skipped"
+
+          # JSON to RDF (semantic web format)
+          echo "  📄 Converting to RDF..."
+          pyspdxtools -i enhanced-spdx/bom-enhanced-fixed.spdx.json \
+                      -o spdx-formats/bom.spdx.rdf || echo "  ⚠️ RDF conversion skipped"
+
+          # Copy JSON for completeness
+          cp enhanced-spdx/bom-enhanced-fixed.spdx.json spdx-formats/bom.spdx.json
+
+          echo "✅ SPDX documents available in multiple formats:"
+          ls -lh spdx-formats/
+
+          # Add to GitHub summary
+          echo "## 📄 SPDX Formats Generated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Available formats:" >> $GITHUB_STEP_SUMMARY
+          echo "- JSON (for APIs and programmatic processing)" >> $GITHUB_STEP_SUMMARY
+          echo "- YAML (for version control and easy diffs)" >> $GITHUB_STEP_SUMMARY
+          echo "- Tag-Value (human-readable for compliance reviews)" >> $GITHUB_STEP_SUMMARY
+          echo "- RDF (for semantic web tools and SBOM analyzers)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "⚠️ No fixed SPDX document found, skipping format conversion"
+        fi
+      continue-on-error: true
+
+    # ====== STAGE 8d: SBOM Compliance Checking ======
+    - name: Check SBOM compliance (NTIA minimum elements)
+      run: |
+        echo "🔍 Stage 8d: Checking SBOM compliance against NTIA minimum elements..."
+
+        if [ -f enhanced-spdx/bom-enhanced-fixed.spdx.json ]; then
+          mkdir -p sbom-compliance
+
+          # Run NTIA compliance checker
+          python3 workflow_components/scripts/sbom_compliance_checker.py \
+            --spdx enhanced-spdx/bom-enhanced-fixed.spdx.json \
+            --html-output sbom-compliance/ntia-compliance-report.html \
+            --json-output sbom-compliance/ntia-compliance.json
+
+          # Display compliance score
+          if [ -f sbom-compliance/ntia-compliance.json ]; then
+            echo ""
+            echo "📊 NTIA Compliance Summary:"
+            python3 << 'EOF'
+import json
+import os
+
+with open('sbom-compliance/ntia-compliance.json', 'r') as f:
+    data = json.load(f)
+
+score = data.get('compliance_score', 0)
+compliant = data.get('ntia_compliant', False)
+total_pkgs = data.get('total_packages', 0)
+missing_author = len(data.get('missing_author', []))
+missing_version = len(data.get('missing_version', []))
+missing_license = len(data.get('missing_license', []))
+
+print(f"  Compliance Score: {score}%")
+print(f"  Status: {'✅ COMPLIANT' if compliant and score >= 90 else '⚠️ NEEDS IMPROVEMENT'}")
+print(f"  Total Packages: {total_pkgs}")
+print(f"  Missing Elements:")
+print(f"    - Author/Supplier: {missing_author}")
+print(f"    - Version: {missing_version}")
+print(f"    - License: {missing_license}")
+
+# Add to GitHub summary
+summary_file = os.environ.get('GITHUB_STEP_SUMMARY', '/dev/null')
+with open(summary_file, 'a') as f:
+    f.write("\n## 📊 SBOM Compliance (NTIA)\n\n")
+    f.write(f"**Compliance Score:** {score}%\n\n")
+    f.write(f"**Status:** {'✅ COMPLIANT' if compliant and score >= 90 else '⚠️ NEEDS IMPROVEMENT'}\n\n")
+    f.write(f"- Total Packages: {total_pkgs}\n")
+    f.write(f"- Missing Author: {missing_author}\n")
+    f.write(f"- Missing Version: {missing_version}\n")
+    f.write(f"- Missing License: {missing_license}\n\n")
+    if score >= 95:
+        f.write("🎉 Excellent SBOM quality!\n")
+    elif score >= 90:
+        f.write("✅ SBOM meets NTIA minimum requirements\n")
+    elif score >= 75:
+        f.write("⚠️ SBOM needs improvement to meet NTIA standards\n")
+    else:
+        f.write("❌ SBOM requires significant improvements\n")
+EOF
+          fi
+
+          echo "✅ NTIA compliance report generated"
+        else
+          echo "⚠️ No SPDX document found, skipping SBOM compliance check"
         fi
       continue-on-error: true
 
@@ -1028,6 +1156,25 @@ jobs:
           echo "  ✓ Curation statistics"
         fi
 
+        # Copy SPDX formats (multiple formats for different tools)
+        if [ -d spdx-formats ] && [ "$(ls -A spdx-formats)" ]; then
+          mkdir -p public/spdx-formats
+          cp spdx-formats/* public/spdx-formats/ 2>/dev/null || true
+          SPDX_FORMAT_COUNT=$(ls -1 spdx-formats/* 2>/dev/null | wc -l)
+          echo "  ✓ Copied $SPDX_FORMAT_COUNT SPDX format files"
+        fi
+
+        # Copy SBOM compliance reports
+        if [ -f sbom-compliance/ntia-compliance-report.html ]; then
+          cp sbom-compliance/ntia-compliance-report.html public/
+          echo "  ✓ NTIA compliance report"
+        fi
+
+        if [ -f sbom-compliance/ntia-compliance.json ]; then
+          cp sbom-compliance/ntia-compliance.json public/
+          echo "  ✓ NTIA compliance data"
+        fi
+
         # Copy background image
         if [ -f background.jpg ] || [ -f background.png ]; then
           cp background.* public/ 2>/dev/null || true
@@ -1051,6 +1198,7 @@ jobs:
         POLICY_JSON_PARAM=""
         CHANGES_JSON_PARAM=""
         CURATION_STATS_PARAM=""
+        SBOM_JSON_PARAM=""
 
         # Check for policy results JSON
         if [ -f "policy-reports/policy-results.json" ]; then
@@ -1107,11 +1255,18 @@ jobs:
           echo "  ✓ Curation statistics found"
         fi
 
+        # Check for SBOM compliance results
+        if [ -f "sbom-compliance/ntia-compliance.json" ]; then
+          SBOM_JSON_PARAM="--sbom-json sbom-compliance/ntia-compliance.json"
+          echo "  ✓ SBOM compliance results found"
+        fi
+
         # Generate compliance dashboard
         python3 workflow_components/scripts/compliance_dashboard.py \
           $POLICY_JSON_PARAM \
           $CHANGES_JSON_PARAM \
           $CURATION_STATS_PARAM \
+          $SBOM_JSON_PARAM \
           --reports-dir public \
           --output compliance-dashboard.html 2>&1 | tee dashboard.log
 

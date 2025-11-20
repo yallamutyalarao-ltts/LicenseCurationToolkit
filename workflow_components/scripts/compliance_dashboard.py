@@ -32,6 +32,7 @@ class ComplianceDashboard:
             'changes': {},
             'alternatives': {},
             'curations': {},
+            'sbom': {},
             'overall': {},
             'action_items': [],
             'reports': []
@@ -135,6 +136,49 @@ class ComplianceDashboard:
         except Exception as e:
             print(f"⚠️  Warning: Could not load curation stats: {e}")
 
+    def load_sbom_compliance(self, sbom_json: str):
+        """Load SBOM compliance results (NTIA minimum elements)"""
+        try:
+            with open(sbom_json, 'r') as f:
+                data = json.load(f)
+
+            self.data['sbom'] = {
+                'compliance_score': data.get('compliance_score', 0),
+                'ntia_compliant': data.get('ntia_compliant', False),
+                'total_packages': data.get('total_packages', 0),
+                'missing_author': len(data.get('missing_author', [])),
+                'missing_version': len(data.get('missing_version', [])),
+                'missing_license': len(data.get('missing_license', [])),
+                'missing_identifier': len(data.get('missing_identifier', [])),
+                'validation_errors': len(data.get('validation_errors', [])),
+                'validation_warnings': len(data.get('validation_warnings', []))
+            }
+
+            print(f"✅ Loaded SBOM compliance: {self.data['sbom']['compliance_score']}% score")
+
+            # Generate action items for SBOM compliance issues
+            if self.data['sbom']['compliance_score'] < 90:
+                priority = 'HIGH' if self.data['sbom']['compliance_score'] < 75 else 'MEDIUM'
+                self.data['action_items'].append({
+                    'priority': priority,
+                    'type': 'SBOM Compliance',
+                    'package': f"{self.data['sbom']['missing_license']} packages missing license",
+                    'action': 'Improve SBOM metadata to meet NTIA requirements',
+                    'deadline': '14 days' if priority == 'MEDIUM' else '7 days'
+                })
+
+            if self.data['sbom']['validation_errors'] > 0:
+                self.data['action_items'].append({
+                    'priority': 'MEDIUM',
+                    'type': 'SPDX Validation',
+                    'package': f"{self.data['sbom']['validation_errors']} errors",
+                    'action': 'Fix SPDX specification validation errors',
+                    'deadline': '14 days'
+                })
+
+        except Exception as e:
+            print(f"⚠️  Warning: Could not load SBOM compliance: {e}")
+
     def detect_available_reports(self, reports_dir: str):
         """Detect available report files"""
         reports_path = Path(reports_dir)
@@ -147,6 +191,7 @@ class ComplianceDashboard:
             'License Changes': 'license-changes-report.html',
             'Alternative Packages': 'alternatives/*.html',
             'Smart Curations': 'manual-review-queue.html',
+            'NTIA SBOM Compliance': 'ntia-compliance-report.html',
             'Main AI Curation': 'curation-report-main.html',
             'Conflict Analysis': 'curation-report-conflicts.html',
             'Missing Licenses': 'curation-report-missing-licenses.html',
@@ -155,6 +200,7 @@ class ComplianceDashboard:
             'ORT Static HTML': 'scan-report.html',
             'ScanCode Summary': 'scancode-summary.html',
             'Enhanced SPDX': 'bom-enhanced-fixed.spdx.json',
+            'SPDX Formats': 'spdx-formats/*.spdx.*',
             'CycloneDX SBOM': 'bom.cyclonedx.json',
         }
 
@@ -183,7 +229,17 @@ class ComplianceDashboard:
     def calculate_overall_metrics(self):
         """Calculate overall compliance metrics"""
         # Overall compliance score (weighted average)
+        # Policy: 60%, SBOM: 25%, Changes: 15% (penalty-based)
         policy_score = self.data['policy'].get('compliance_score', 0)
+        sbom_score = self.data['sbom'].get('compliance_score', 0) if self.data['sbom'] else 0
+
+        # Weighted base score
+        if self.data['sbom']:
+            # If SBOM data available: 60% policy + 25% SBOM + 15% buffer for changes
+            base_score = (policy_score * 0.60) + (sbom_score * 0.25) + (100 * 0.15)
+        else:
+            # No SBOM data: use policy score only
+            base_score = policy_score
 
         # Penalty for critical changes
         critical_changes = self.data['changes'].get('critical', 0)
@@ -193,7 +249,12 @@ class ComplianceDashboard:
         forbidden_count = self.data['policy'].get('forbidden', 0)
         forbidden_penalty = min(30, forbidden_count * 15)  # -15% per forbidden, max -30%
 
-        overall_score = max(0, policy_score - change_penalty - forbidden_penalty)
+        # Penalty for poor SBOM quality
+        sbom_penalty = 0
+        if self.data['sbom'] and sbom_score < 75:
+            sbom_penalty = min(10, (75 - sbom_score) / 5)  # Up to -10% for poor SBOM
+
+        overall_score = max(0, base_score - change_penalty - forbidden_penalty - sbom_penalty)
 
         # Risk level
         if overall_score >= 90 and critical_changes == 0 and forbidden_count == 0:
@@ -587,6 +648,55 @@ class ComplianceDashboard:
             </div>
         </div>
 
+        <!-- SBOM Compliance (if available) -->
+"""
+
+        sbom = self.data.get('sbom', {})
+        if sbom:
+            html += f"""
+        <div class="grid">
+            <div class="card full-width">
+                <div class="card-title"><span class="icon">📋</span>SBOM Compliance (NTIA Minimum Elements)</div>
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 20px;">
+                    <div class="stat-box">
+                        <div class="stat-number" style="color: {'#4caf50' if sbom.get('compliance_score', 0) >= 90 else '#ff9800' if sbom.get('compliance_score', 0) >= 75 else '#f44336'};">{int(sbom.get('compliance_score', 0))}%</div>
+                        <div class="stat-label">Compliance Score</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">{sbom.get('total_packages', 0)}</div>
+                        <div class="stat-label">Total Packages</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" style="color: {'#f44336' if sbom.get('missing_license', 0) > 0 else '#4caf50'};">{sbom.get('missing_license', 0)}</div>
+                        <div class="stat-label">Missing License</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" style="color: {'#ff9800' if sbom.get('missing_author', 0) > 0 else '#4caf50'};">{sbom.get('missing_author', 0)}</div>
+                        <div class="stat-label">Missing Author</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" style="color: {'#ff9800' if sbom.get('missing_version', 0) > 0 else '#4caf50'};">{sbom.get('missing_version', 0)}</div>
+                        <div class="stat-label">Missing Version</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number" style="color: {'#f44336' if sbom.get('validation_errors', 0) > 0 else '#ffc107' if sbom.get('validation_warnings', 0) > 0 else '#4caf50'};">{sbom.get('validation_errors', 0)}</div>
+                        <div class="stat-label">SPDX Errors</div>
+                    </div>
+                </div>
+                <div style="margin-top: 20px; padding: 15px; background: {'#e8f5e9' if sbom.get('ntia_compliant', False) and sbom.get('compliance_score', 0) >= 90 else '#fff3e0'}; border-radius: 8px; text-align: center;">
+                    <strong style="font-size: 16px; color: {'#2e7d32' if sbom.get('ntia_compliant', False) and sbom.get('compliance_score', 0) >= 90 else '#f57c00'};">
+                        {'✅ NTIA Compliant' if sbom.get('ntia_compliant', False) and sbom.get('compliance_score', 0) >= 90 else '⚠️ Needs Improvement'}
+                    </strong>
+                    <div style="margin-top: 8px; font-size: 13px; color: #666;">
+                        {'SBOM meets NTIA minimum elements for software transparency' if sbom.get('ntia_compliant', False) and sbom.get('compliance_score', 0) >= 90 else 'SBOM quality should be improved to meet industry standards'}
+                    </div>
+                </div>
+            </div>
+        </div>
+"""
+
+        html += """
+
         <!-- Action Items -->
         <div class="card full-width">
             <div class="card-title"><span class="icon">⚡</span>Priority Action Items</div>
@@ -695,6 +805,7 @@ def main():
     parser.add_argument('--policy-json', help='Policy compliance results JSON file')
     parser.add_argument('--changes-json', help='License changes results JSON file')
     parser.add_argument('--curation-stats', help='Smart curation statistics JSON file')
+    parser.add_argument('--sbom-json', help='SBOM compliance (NTIA) results JSON file')
     parser.add_argument('--reports-dir', default='.',
                        help='Directory to scan for available reports')
     parser.add_argument('--output', default='compliance-dashboard.html',
@@ -720,6 +831,10 @@ def main():
     if args.curation_stats:
         print("\n🤖 Loading smart curation statistics...")
         dashboard.load_curation_stats(args.curation_stats)
+
+    if args.sbom_json:
+        print("\n📋 Loading SBOM compliance results...")
+        dashboard.load_sbom_compliance(args.sbom_json)
 
     # Detect available reports
     print("\n📄 Detecting available reports...")

@@ -29,6 +29,7 @@ def generate_landing_page(public_dir='public'):
     policy_compliance = ''
     license_changes = ''
     manual_review_queue = ''
+    ntia_compliance_report = ''
 
     # Find files
     for file in public_path.glob('*web-app*.html'):
@@ -87,6 +88,23 @@ def generate_landing_page(public_dir='public'):
 
     if (public_path / 'manual-review-queue.html').exists():
         manual_review_queue = 'manual-review-queue.html'
+
+    # SBOM and SPDX Compliance Reports
+    if (public_path / 'ntia-compliance-report.html').exists():
+        ntia_compliance_report = 'ntia-compliance-report.html'
+
+    # Check for SPDX formats directory
+    spdx_formats_dir = public_path / 'spdx-formats'
+    spdx_formats_available = []
+    if spdx_formats_dir.exists():
+        if (spdx_formats_dir / 'bom.spdx.json').exists():
+            spdx_formats_available.append({'format': 'JSON', 'file': 'spdx-formats/bom.spdx.json', 'desc': 'API & programmatic'})
+        if (spdx_formats_dir / 'bom.spdx.yml').exists():
+            spdx_formats_available.append({'format': 'YAML', 'file': 'spdx-formats/bom.spdx.yml', 'desc': 'Version control'})
+        if (spdx_formats_dir / 'bom.spdx.tv').exists():
+            spdx_formats_available.append({'format': 'Tag-Value', 'file': 'spdx-formats/bom.spdx.tv', 'desc': 'Human-readable'})
+        if (spdx_formats_dir / 'bom.spdx.rdf').exists():
+            spdx_formats_available.append({'format': 'RDF', 'file': 'spdx-formats/bom.spdx.rdf', 'desc': 'Semantic web'})
 
     # Find individual ScanCode package reports
     scancode_reports_dir = public_path / 'scancode-reports'
@@ -261,6 +279,16 @@ def generate_landing_page(public_dir='public'):
       </a>
 '''
 
+    # Add NTIA SBOM Compliance Report
+    if ntia_compliance_report:
+        html += f'''
+      <a href="{ntia_compliance_report}" class="report-card highlight">
+        <div class="report-icon">📋</div>
+        <div class="report-title">SBOM Compliance Report <span class="badge">NTIA</span></div>
+        <div class="report-desc">SBOM validation against NTIA minimum elements - compliance score, missing metadata, and quality metrics</div>
+      </a>
+'''
+
     # Add AI main curation report
     if ai_main_report:
         html += f'''
@@ -379,6 +407,26 @@ def generate_landing_page(public_dir='public'):
         <div class="report-title">CycloneDX SBOM</div>
         <div class="report-desc">Software Bill of Materials in CycloneDX format</div>
       </a>
+'''
+
+    # Add SPDX Formats Section (multiple formats available)
+    if spdx_formats_available:
+        html += '''
+      <div class="report-card highlight" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);">
+        <div class="report-icon">📄</div>
+        <div class="report-title">SPDX Formats <span class="badge">MULTI-FORMAT</span></div>
+        <div class="report-desc">SBOM available in multiple SPDX formats for different use cases:</div>
+        <div style="margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px;">
+'''
+        for fmt in spdx_formats_available:
+            html += f'''
+          <a href="{fmt['file']}" style="background: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; color: #1976d2; font-weight: 600; font-size: 13px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); transition: all 0.2s;" onmouseover="this.style.boxShadow='0 4px 8px rgba(0,0,0,0.15)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)'; this.style.transform='translateY(0)';">
+            {fmt['format']} <span style="color: #666; font-weight: normal; font-size: 11px;">({fmt['desc']})</span>
+          </a>
+'''
+        html += '''
+        </div>
+      </div>
 '''
 
     # Add original SPDX if no enhanced version
