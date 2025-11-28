@@ -93,7 +93,7 @@ jobs:
           -o ort-results/reporter \
           -f WebApp,StaticHtml,CycloneDx,SpdxDocument
 
-    # ====== STAGE 2: Policy Compliance Check ======
+    # ====== STAGE 2: Policy Compliance Check =======
     - name: Check License Policy Compliance
       run: |
         echo "🔒 Stage 2: Checking license policy compliance..."
