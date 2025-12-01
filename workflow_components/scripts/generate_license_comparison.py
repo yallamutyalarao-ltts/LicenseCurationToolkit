@@ -334,11 +334,25 @@ class LicenseComparison:
 
         print("📋 Loading SPDX concluded licenses...")
 
-        with open(self.spdx_path, 'r', encoding='utf-8') as f:
-            if self.spdx_path.suffix == '.json':
-                spdx_data = json.load(f)
-            else:
-                spdx_data = yaml.safe_load(f)
+        try:
+            with open(self.spdx_path, 'r', encoding='utf-8') as f:
+                content = f.read().strip()
+                if not content:
+                    print("⚠️  SPDX file is empty, skipping...")
+                    return
+
+                f.seek(0)  # Reset file pointer
+                if self.spdx_path.suffix == '.json':
+                    spdx_data = json.load(f)
+                else:
+                    spdx_data = yaml.safe_load(f)
+        except (json.JSONDecodeError, yaml.YAMLError) as e:
+            print(f"⚠️  Error parsing SPDX file: {e}, skipping...")
+            return
+
+        if not spdx_data:
+            print("⚠️  SPDX file contains no data, skipping...")
+            return
 
         spdx_packages = spdx_data.get('packages', [])
 
@@ -691,15 +705,15 @@ class LicenseComparison:
             </div>
             <div class="stat-card">
                 <h3 class="stat-complete">{complete}</h3>
-                <p>Complete ({complete/total*100:.1f}%)</p>
+                <p>Complete ({complete/total*100 if total > 0 else 0:.1f}%)</p>
             </div>
             <div class="stat-card">
                 <h3 class="stat-conflicts">{conflicts}</h3>
-                <p>Conflicts ({conflicts/total*100:.1f}%)</p>
+                <p>Conflicts ({conflicts/total*100 if total > 0 else 0:.1f}%)</p>
             </div>
             <div class="stat-card">
                 <h3 class="stat-missing">{missing}</h3>
-                <p>Missing ({missing/total*100:.1f}%)</p>
+                <p>Missing ({missing/total*100 if total > 0 else 0:.1f}%)</p>
             </div>
         </div>
 
@@ -861,9 +875,14 @@ class LicenseComparison:
         print(f"✅ Report generated: {output_file}")
         print(f"\n📊 Summary:")
         print(f"   Total packages: {total}")
-        print(f"   Complete: {complete} ({complete/total*100:.1f}%)")
-        print(f"   Conflicts: {conflicts} ({conflicts/total*100:.1f}%)")
-        print(f"   Missing: {missing} ({missing/total*100:.1f}%)")
+        if total > 0:
+            print(f"   Complete: {complete} ({complete/total*100:.1f}%)")
+            print(f"   Conflicts: {conflicts} ({conflicts/total*100:.1f}%)")
+            print(f"   Missing: {missing} ({missing/total*100:.1f}%)")
+        else:
+            print(f"   Complete: {complete} (0.0%)")
+            print(f"   Conflicts: {conflicts} (0.0%)")
+            print(f"   Missing: {missing} (0.0%)")
 
 
 def main():
@@ -922,14 +941,39 @@ def main():
 
     # Load data from all sources
     # IMPORTANT: Load uncertain packages BEFORE ScanCode for accurate matching
-    comparison.load_ort_licenses()
-    comparison.load_uncertain_packages()  # Load this first for ScanCode matching
-    comparison.load_pypi_licenses()
-    comparison.load_scancode_licenses()  # Now this can use uncertain packages for matching
-    comparison.load_spdx_concluded()
+    try:
+        comparison.load_ort_licenses()
+    except Exception as e:
+        print(f"⚠️  Error loading ORT licenses: {e}")
+        # ORT is required, so fail if it doesn't load
+        raise
 
-    # Generate report
-    comparison.generate_html_report(args.output)
+    try:
+        comparison.load_uncertain_packages()  # Load this first for ScanCode matching
+    except Exception as e:
+        print(f"⚠️  Error loading uncertain packages: {e} (continuing...)")
+
+    try:
+        comparison.load_pypi_licenses()
+    except Exception as e:
+        print(f"⚠️  Error loading PyPI licenses: {e} (continuing...)")
+
+    try:
+        comparison.load_scancode_licenses()  # Now this can use uncertain packages for matching
+    except Exception as e:
+        print(f"⚠️  Error loading ScanCode licenses: {e} (continuing...)")
+
+    try:
+        comparison.load_spdx_concluded()
+    except Exception as e:
+        print(f"⚠️  Error loading SPDX concluded: {e} (continuing...)")
+
+    # Generate report (should work even if only ORT data is available)
+    try:
+        comparison.generate_html_report(args.output)
+    except Exception as e:
+        print(f"❌ Error generating HTML report: {e}")
+        raise
 
     print("\n" + "=" * 80)
     print("✅ License comparison report generation complete!")
@@ -937,4 +981,11 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        print(f"\n❌ ERROR: License comparison report generation failed!")
+        print(f"Error: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
